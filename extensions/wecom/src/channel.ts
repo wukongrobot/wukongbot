@@ -2,7 +2,7 @@
  * 企业微信 Channel 插件实现
  */
 
-import type { ChannelPlugin } from "clawdbot/plugin-sdk";
+import type { ChannelPlugin } from "../../../src/plugin-sdk/index.js";
 import { WeComClient } from "./sdk.js";
 import type { WeComConfig } from "./types.js";
 

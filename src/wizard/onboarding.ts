@@ -76,11 +76,11 @@ async function requireRiskAcknowledgement(params: {
   );
 
   const ok = await params.prompter.confirm({
-    message: "I understand this is powerful and inherently risky. Continue?",
+    message: "我理解这是强大且有风险的工具。继续?",
     initialValue: false,
   });
   if (!ok) {
-    throw new WizardCancelledError("risk not accepted");
+    throw new WizardCancelledError("风险未被接受");
   }
 }
 
@@ -97,26 +97,26 @@ export async function runOnboardingWizard(
   let baseConfig: MoltbotConfig = snapshot.valid ? snapshot.config : {};
 
   if (snapshot.exists && !snapshot.valid) {
-    await prompter.note(summarizeExistingConfig(baseConfig), "Invalid config");
+    await prompter.note(summarizeExistingConfig(baseConfig), "配置无效");
     if (snapshot.issues.length > 0) {
       await prompter.note(
         [
           ...snapshot.issues.map((iss) => `- ${iss.path}: ${iss.message}`),
           "",
-          "Docs: https://docs.molt.bot/gateway/configuration",
+          "文档: https://docs.molt.bot/gateway/configuration",
         ].join("\n"),
-        "Config issues",
+        "配置问题",
       );
     }
     await prompter.outro(
-      `Config invalid. Run \`${formatCliCommand("moltbot doctor")}\` to repair it, then re-run onboarding.`,
+      `配置无效。运行 \`${formatCliCommand("wukongbot doctor")}\` 修复后，再重新运行配置向导。`,
     );
     runtime.exit(1);
     return;
   }
 
-  const quickstartHint = `Configure details later via ${formatCliCommand("moltbot configure")}.`;
-  const manualHint = "Configure port, network, Tailscale, and auth options.";
+  const quickstartHint = `稍后可通过 ${formatCliCommand("wukongbot configure")} 配置详细信息。`;
+  const manualHint = "配置端口、网络、Tailscale 和认证选项。";
   const explicitFlowRaw = opts.flow?.trim();
   const normalizedExplicitFlow = explicitFlowRaw === "manual" ? "advanced" : explicitFlowRaw;
   if (
@@ -124,7 +124,7 @@ export async function runOnboardingWizard(
     normalizedExplicitFlow !== "quickstart" &&
     normalizedExplicitFlow !== "advanced"
   ) {
-    runtime.error("Invalid --flow (use quickstart, manual, or advanced).");
+    runtime.error("无效的 --flow 参数（请使用 quickstart, manual, 或 advanced）。");
     runtime.exit(1);
     return;
   }
@@ -144,10 +144,7 @@ export async function runOnboardingWizard(
     })) as "quickstart" | "advanced");
 
   if (opts.mode === "remote" && flow === "quickstart") {
-    await prompter.note(
-      "快速开始模式仅支持本地网关。切换到手动配置模式。",
-      "快速开始",
-    );
+    await prompter.note("快速开始模式仅支持本地网关。切换到手动配置模式。", "快速开始");
     flow = "advanced";
   }
 
@@ -157,25 +154,25 @@ export async function runOnboardingWizard(
     const action = (await prompter.select({
       message: "配置处理方式",
       options: [
-        { value: "keep", label: "Use existing values" },
-        { value: "modify", label: "Update values" },
-        { value: "reset", label: "Reset" },
+        { value: "keep", label: "使用现有配置" },
+        { value: "modify", label: "更新配置" },
+        { value: "reset", label: "重置配置" },
       ],
     })) as "keep" | "modify" | "reset";
 
     if (action === "reset") {
       const workspaceDefault = baseConfig.agents?.defaults?.workspace ?? DEFAULT_WORKSPACE;
       const resetScope = (await prompter.select({
-        message: "Reset scope",
+        message: "重置范围",
         options: [
-          { value: "config", label: "Config only" },
+          { value: "config", label: "仅配置文件" },
           {
             value: "config+creds+sessions",
-            label: "Config + creds + sessions",
+            label: "配置 + 凭证 + 会话",
           },
           {
             value: "full",
-            label: "Full reset (config + creds + sessions + workspace)",
+            label: "完全重置 (配置 + 凭证 + 会话 + 工作区)",
           },
         ],
       })) as ResetScope;

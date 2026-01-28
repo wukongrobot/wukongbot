@@ -20,7 +20,7 @@ import { collectOption } from "./helpers.js";
 export function registerAgentCommands(program: Command, args: { agentChannelOptions: string }) {
   program
     .command("agent")
-    .description("Run an agent turn via the Gateway (use --local for embedded)")
+    .description("通过网关运行 Agent（使用 --local 进行本地嵌入）")
     .requiredOption("-m, --message <text>", "Message body for the agent")
     .option("-t, --to <number>", "Recipient number in E.164 used to derive the session key")
     .option("--session-id <id>", "Use an explicit session id")
@@ -82,7 +82,7 @@ ${theme.muted("Docs:")} ${formatDocsLink("/cli/agent", "docs.molt.bot/cli/agent"
 
   const agents = program
     .command("agents")
-    .description("Manage isolated agents (workspaces + auth + routing)")
+    .description("管理隔离的 Agent（工作区 + 认证 + 路由）")
     .addHelpText(
       "after",
       () =>

@@ -20,7 +20,10 @@ export type AuthChoiceGroupId =
   | "minimax"
   | "synthetic"
   | "venice"
-  | "qwen";
+  | "qwen"
+  | "deepseek"
+  | "siliconflow"
+  | "doubao";
 
 export type AuthChoiceGroup = {
   value: AuthChoiceGroupId;
@@ -35,6 +38,48 @@ const AUTH_CHOICE_GROUP_DEFS: {
   hint?: string;
   choices: AuthChoice[];
 }[] = [
+  {
+    value: "deepseek",
+    label: "DeepSeek (深度求索)",
+    hint: "API key (推荐)",
+    choices: ["openai-api-key"],
+  },
+  {
+    value: "qwen",
+    label: "Qwen (通义千问)",
+    hint: "OAuth / API key",
+    choices: ["qwen-portal"],
+  },
+  {
+    value: "moonshot",
+    label: "Moonshot AI (Kimi)",
+    hint: "Kimi K2 + Kimi Code",
+    choices: ["moonshot-api-key", "kimi-code-api-key"],
+  },
+  {
+    value: "siliconflow",
+    label: "SiliconFlow (硅基流动)",
+    hint: "API key (多模型)",
+    choices: ["openai-api-key"],
+  },
+  {
+    value: "doubao",
+    label: "Doubao (豆包)",
+    hint: "API key (字节跳动)",
+    choices: ["openai-api-key"],
+  },
+  {
+    value: "zai",
+    label: "Z.AI (GLM 4.7)",
+    hint: "API key (智谱AI)",
+    choices: ["zai-api-key"],
+  },
+  {
+    value: "minimax",
+    label: "MiniMax",
+    hint: "M2.1 (推荐)",
+    choices: ["minimax-api", "minimax-api-lightning"],
+  },
   {
     value: "openai",
     label: "OpenAI",
@@ -55,9 +100,27 @@ const AUTH_CHOICE_GROUP_DEFS: {
   },
   {
     value: "qwen",
-    label: "Qwen",
-    hint: "OAuth",
+    label: "Qwen (通义千问)",
+    hint: "OAuth / API key",
     choices: ["qwen-portal"],
+  },
+  {
+    value: "deepseek",
+    label: "DeepSeek (深度求索)",
+    hint: "API key (推荐国产模型)",
+    choices: ["openai-api-key"],
+  },
+  {
+    value: "siliconflow",
+    label: "SiliconFlow (硅基流动)",
+    hint: "API key (多模型支持)",
+    choices: ["openai-api-key"],
+  },
+  {
+    value: "doubao",
+    label: "Doubao (豆包)",
+    hint: "API key (字节跳动)",
+    choices: ["openai-api-key"],
   },
   {
     value: "synthetic",
@@ -94,18 +157,6 @@ const AUTH_CHOICE_GROUP_DEFS: {
     label: "Vercel AI Gateway",
     hint: "API key",
     choices: ["ai-gateway-api-key"],
-  },
-  {
-    value: "moonshot",
-    label: "Moonshot AI",
-    hint: "Kimi K2 + Kimi Code",
-    choices: ["moonshot-api-key", "kimi-code-api-key"],
-  },
-  {
-    value: "zai",
-    label: "Z.AI (GLM 4.7)",
-    hint: "API key",
-    choices: ["zai-api-key"],
   },
   {
     value: "opencode-zen",

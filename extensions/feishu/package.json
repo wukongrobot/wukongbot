@@ -11,16 +11,28 @@
     "clawdbot-plugin"
   ],
   "dependencies": {
-    "@larksuiteoapi/node-sdk": "^2.0.0",
+    "@larksuiteoapi/node-sdk": "^1.56.0",
     "express": "^4.18.0"
   },
   "devDependencies": {
-    "clawdbot": "workspace:*",
     "typescript": "^5.0.0",
     "@types/express": "^4.17.0",
     "@types/node": "^22.0.0"
   },
-  "peerDependencies": {
-    "clawdbot": "workspace:*"
+  "moltbot": {
+    "channel": {
+      "id": "feishu",
+      "label": "飞书",
+      "selectionLabel": "飞书 (Feishu/Lark)",
+      "detailLabel": "飞书 (Lark)",
+      "blurb": "飞书企业协作平台",
+      "docsPath": "/channels/feishu",
+      "order": 50
+    },
+    "install": {
+      "npmSpec": "clawdbot-plugin-feishu",
+      "localPath": "../extensions/feishu",
+      "defaultChoice": "local"
+    }
   }
 }

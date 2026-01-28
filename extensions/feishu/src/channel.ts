@@ -2,7 +2,7 @@
  * 飞书 Channel 插件实现
  */
 
-import type { ChannelPlugin } from "clawdbot/plugin-sdk";
+import type { ChannelPlugin } from "../../../src/plugin-sdk/index.js";
 import { FeishuClient } from "./sdk.js";
 import type { FeishuConfig } from "./types.js";
 import { onboardFeishu, type Prompter } from "./onboarding.js";

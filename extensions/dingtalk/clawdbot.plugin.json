@@ -5,6 +5,14 @@
   "description": "钉钉(DingTalk) IM 平台集成,支持消息收发、文件传输、群组管理等功能",
   "author": "WukongBot Team",
   "type": "channel",
+  "channels": [
+    "dingtalk"
+  ],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  },
   "homepage": "https://github.com/yourusername/wukongbot",
   "repository": {
     "type": "git",

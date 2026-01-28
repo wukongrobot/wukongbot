@@ -11,7 +11,7 @@ import { runCommandWithRuntime } from "../cli-utils.js";
 export function registerMaintenanceCommands(program: Command) {
   program
     .command("doctor")
-    .description("Health checks + quick fixes for the gateway and channels")
+    .description("健康检查和快速修复网关及频道问题")
     .addHelpText(
       "after",
       () =>
@@ -41,7 +41,7 @@ export function registerMaintenanceCommands(program: Command) {
 
   program
     .command("dashboard")
-    .description("Open the Control UI with your current token")
+    .description("使用当前令牌打开控制面板")
     .addHelpText(
       "after",
       () =>
@@ -58,7 +58,7 @@ export function registerMaintenanceCommands(program: Command) {
 
   program
     .command("reset")
-    .description("Reset local config/state (keeps the CLI installed)")
+    .description("重置本地配置/状态（保留 CLI 安装）")
     .addHelpText(
       "after",
       () =>
@@ -81,7 +81,7 @@ export function registerMaintenanceCommands(program: Command) {
 
   program
     .command("uninstall")
-    .description("Uninstall the gateway service + local data (CLI remains)")
+    .description("卸载网关服务和本地数据（CLI 保留）")
     .addHelpText(
       "after",
       () =>

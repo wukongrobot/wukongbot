@@ -12,7 +12,8 @@
   },
   "bin": {
     "moltbot": "./moltbot.mjs",
-    "clawdbot": "./moltbot.mjs"
+    "clawdbot": "./moltbot.mjs",
+    "wukongbot": "./moltbot.mjs"
   },
   "files": [
     "dist/acp/**",
@@ -79,6 +80,8 @@
     "dist/whatsapp/**"
   ],
   "scripts": {
+    "wukongbot": "node moltbot.mjs",
+    "moltbot": "node moltbot.mjs",
     "dev": "node scripts/run-node.mjs",
     "postinstall": "node scripts/postinstall.js",
     "prepack": "pnpm build && pnpm ui:build",

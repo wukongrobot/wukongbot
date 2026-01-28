@@ -2,7 +2,7 @@
  * 钉钉 Channel 插件实现
  */
 
-import type { ChannelPlugin } from "clawdbot/plugin-sdk";
+import type { ChannelPlugin } from "../../../src/plugin-sdk/index.js";
 import { DingTalkClient } from "./sdk.js";
 import type { DingTalkConfig } from "./types.js";
 

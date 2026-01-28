@@ -30,7 +30,7 @@ const loadConfig = async (): Promise<MoltbotConfig> => {
 const entries: SubCliEntry[] = [
   {
     name: "acp",
-    description: "Agent Control Protocol tools",
+    description: "Agent 控制协议工具",
     register: async (program) => {
       const mod = await import("../acp-cli.js");
       mod.registerAcpCli(program);
@@ -38,7 +38,7 @@ const entries: SubCliEntry[] = [
   },
   {
     name: "gateway",
-    description: "Gateway control",
+    description: "网关控制",
     register: async (program) => {
       const mod = await import("../gateway-cli.js");
       mod.registerGatewayCli(program);
@@ -46,7 +46,7 @@ const entries: SubCliEntry[] = [
   },
   {
     name: "daemon",
-    description: "Gateway service (legacy alias)",
+    description: "网关服务（旧别名）",
     register: async (program) => {
       const mod = await import("../daemon-cli.js");
       mod.registerDaemonCli(program);
@@ -54,7 +54,7 @@ const entries: SubCliEntry[] = [
   },
   {
     name: "logs",
-    description: "Gateway logs",
+    description: "网关日志",
     register: async (program) => {
       const mod = await import("../logs-cli.js");
       mod.registerLogsCli(program);
@@ -62,7 +62,7 @@ const entries: SubCliEntry[] = [
   },
   {
     name: "system",
-    description: "System events, heartbeat, and presence",
+    description: "系统事件、心跳和状态",
     register: async (program) => {
       const mod = await import("../system-cli.js");
       mod.registerSystemCli(program);
@@ -70,7 +70,7 @@ const entries: SubCliEntry[] = [
   },
   {
     name: "models",
-    description: "Model configuration",
+    description: "模型配置",
     register: async (program) => {
       const mod = await import("../models-cli.js");
       mod.registerModelsCli(program);
@@ -78,7 +78,7 @@ const entries: SubCliEntry[] = [
   },
   {
     name: "approvals",
-    description: "Exec approvals",
+    description: "执行审批",
     register: async (program) => {
       const mod = await import("../exec-approvals-cli.js");
       mod.registerExecApprovalsCli(program);

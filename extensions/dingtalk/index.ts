@@ -2,7 +2,7 @@
  * 钉钉插件入口
  */
 
-import type { PluginApi } from "clawdbot/plugin-sdk";
+import type { PluginApi } from "../../src/plugin-sdk/index.js";
 import { createDingTalkChannelPlugin } from "./src/channel.js";
 
 export default {

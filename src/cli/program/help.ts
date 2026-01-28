@@ -8,22 +8,26 @@ import type { ProgramContext } from "./context.js";
 const CLI_NAME = resolveCliName();
 
 const EXAMPLES = [
-  ["moltbot channels login --verbose", "Link personal WhatsApp Web and show QR + connection logs."],
+  ["wukongbot channels login --verbose", "连接个人 WhatsApp Web 并显示二维码和连接日志"],
   [
-    'moltbot message send --target +15555550123 --message "Hi" --json',
-    "Send via your web session and print JSON result.",
+    'wukongbot message send --target +15555550123 --message "你好" --json',
+    "通过你的 Web 会话发送消息并输出 JSON 结果",
   ],
-  ["moltbot gateway --port 18789", "Run the WebSocket Gateway locally."],
-  ["moltbot --dev gateway", "Run a dev Gateway (isolated state/config) on ws://127.0.0.1:19001."],
-  ["moltbot gateway --force", "Kill anything bound to the default gateway port, then start it."],
-  ["moltbot gateway ...", "Gateway control via WebSocket."],
+  ["wukongbot gateway --port 18789", "在本地运行 WebSocket 网关"],
+  ["wukongbot --dev gateway", "运行开发网关（隔离状态/配置）on ws://127.0.0.1:19001"],
+  ["wukongbot gateway --force", "强制关闭占用默认网关端口的进程，然后启动"],
+  ["wukongbot gateway ...", "通过 WebSocket 控制网关"],
   [
-    'moltbot agent --to +15555550123 --message "Run summary" --deliver',
-    "Talk directly to the agent using the Gateway; optionally send the WhatsApp reply.",
+    'wukongbot agent --to +15555550123 --message "运行摘要" --deliver',
+    "使用网关直接与 Agent 对话；可选择发送 WhatsApp 回复",
   ],
   [
-    'moltbot message send --channel telegram --target @mychat --message "Hi"',
-    "Send via your Telegram bot.",
+    'wukongbot message send --channel telegram --target @mychat --message "你好"',
+    "通过你的 Telegram 机器人发送消息",
+  ],
+  [
+    'wukongbot message send --channel feishu --target "chat_id" --message "你好"',
+    "通过飞书发送消息",
   ],
 ] as const;
 
@@ -34,14 +38,14 @@ export function configureProgramHelp(program: Command, ctx: ProgramContext) {
     .version(ctx.programVersion)
     .option(
       "--dev",
-      "Dev profile: isolate state under ~/.clawdbot-dev, default gateway port 19001, and shift derived ports (browser/canvas)",
+      "开发配置：在 ~/.clawdbot-dev 下隔离状态，默认网关端口 19001，并移动派生端口（浏览器/canvas）",
     )
     .option(
       "--profile <name>",
-      "Use a named profile (isolates CLAWDBOT_STATE_DIR/CLAWDBOT_CONFIG_PATH under ~/.clawdbot-<name>)",
+      "使用命名配置（在 ~/.clawdbot-<name> 下隔离 CLAWDBOT_STATE_DIR/CLAWDBOT_CONFIG_PATH）",
     );
 
-  program.option("--no-color", "Disable ANSI colors", false);
+  program.option("--no-color", "禁用 ANSI 颜色", false);
 
   program.configureHelp({
     optionTerm: (option) => theme.option(option.flags),
@@ -51,9 +55,9 @@ export function configureProgramHelp(program: Command, ctx: ProgramContext) {
   program.configureOutput({
     writeOut: (str) => {
       const colored = str
-        .replace(/^Usage:/gm, theme.heading("Usage:"))
-        .replace(/^Options:/gm, theme.heading("Options:"))
-        .replace(/^Commands:/gm, theme.heading("Commands:"));
+        .replace(/^Usage:/gm, theme.heading("使用方法:"))
+        .replace(/^Options:/gm, theme.heading("选项:"))
+        .replace(/^Commands:/gm, theme.heading("命令:"));
       process.stdout.write(colored);
     },
     writeErr: (str) => process.stderr.write(str),
@@ -83,6 +87,6 @@ export function configureProgramHelp(program: Command, ctx: ProgramContext) {
   program.addHelpText("afterAll", ({ command }) => {
     if (command !== program) return "";
     const docs = formatDocsLink("/cli", "docs.molt.bot/cli");
-    return `\n${theme.heading("Examples:")}\n${fmtExamples}\n\n${theme.muted("Docs:")} ${docs}\n`;
+    return `\n${theme.heading("示例:")}\n${fmtExamples}\n\n${theme.muted("文档:")} ${docs}\n`;
   });
 }

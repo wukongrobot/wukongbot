@@ -24,7 +24,7 @@ import { registerMessageBroadcastCommand } from "./message/register.broadcast.js
 export function registerMessageCommands(program: Command, ctx: ProgramContext) {
   const message = program
     .command("message")
-    .description("Send messages and channel actions")
+    .description("发送消息和频道操作")
     .addHelpText(
       "after",
       () =>

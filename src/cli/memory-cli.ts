@@ -420,7 +420,7 @@ export async function runMemoryStatus(opts: MemoryCommandOptions) {
 export function registerMemoryCli(program: Command) {
   const memory = program
     .command("memory")
-    .description("Memory search tools")
+    .description("记忆搜索工具")
     .addHelpText(
       "after",
       () =>

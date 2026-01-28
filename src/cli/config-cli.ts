@@ -181,7 +181,7 @@ async function loadValidConfig() {
 export function registerConfigCli(program: Command) {
   const cmd = program
     .command("config")
-    .description("Config helpers (get/set/unset). Run without subcommand for the wizard.")
+    .description("配置助手（get/set/unset）。不带子命令运行则启动向导。")
     .addHelpText(
       "after",
       () =>

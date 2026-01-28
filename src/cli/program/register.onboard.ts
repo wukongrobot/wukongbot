@@ -34,7 +34,7 @@ function resolveInstallDaemonFlag(
 export function registerOnboardCommand(program: Command) {
   program
     .command("onboard")
-    .description("Interactive wizard to set up the gateway, workspace, and skills")
+    .description("交互式向导，用于设置网关、工作区和技能")
     .addHelpText(
       "after",
       () =>

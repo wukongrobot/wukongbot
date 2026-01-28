@@ -10,7 +10,7 @@ import { runCommandWithRuntime } from "../cli-utils.js";
 export function registerSetupCommand(program: Command) {
   program
     .command("setup")
-    .description("Initialize ~/.clawdbot/moltbot.json and the agent workspace")
+    .description("初始化 ~/.clawdbot/moltbot.json 和 Agent 工作区")
     .addHelpText(
       "after",
       () =>
