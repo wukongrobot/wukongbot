@@ -128,20 +128,17 @@ export function renderApp(state: AppViewState) {
             <span class="nav-collapse-toggle__icon">${icons.menu}</span>
           </button>
           <div class="brand">
-            <div class="brand-logo">
-              <img src="https://mintcdn.com/clawdhub/4rYvG-uuZrMK_URE/assets/pixel-lobster.svg?fit=max&auto=format&n=4rYvG-uuZrMK_URE&q=85&s=da2032e9eac3b5d9bfe7eb96ca6a8a26" alt="Moltbot" />
-            </div>
             <div class="brand-text">
-              <div class="brand-title">MOLTBOT</div>
-              <div class="brand-sub">Gateway Dashboard</div>
+              <div class="brand-title">WUKONGBOT</div>
+              <div class="brand-sub">网关控制面板</div>
             </div>
           </div>
         </div>
         <div class="topbar-status">
           <div class="pill">
             <span class="statusDot ${state.connected ? "ok" : ""}"></span>
-            <span>Health</span>
-            <span class="mono">${state.connected ? "OK" : "Offline"}</span>
+            <span>健康状态</span>
+            <span class="mono">${state.connected ? "在线" : "离线"}</span>
           </div>
           ${renderThemeToggle(state)}
         </div>

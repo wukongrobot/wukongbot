@@ -207,7 +207,7 @@ export function renderOverview(props: OverviewProps) {
               ${insecureContextHint ?? ""}
             </div>`
           : html`<div class="callout" style="margin-top: 14px;">
-              使用“渠道”来连接 WhatsApp、Telegram、Discord、Signal 或 iMessage。
+              使用“渠道”来连接 飞书、钉钉、企业微信、WhatsApp、Telegram、Discord、Signal 或 iMessage。
             </div>`}
       </div>
     </section>

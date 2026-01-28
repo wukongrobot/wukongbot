@@ -30,6 +30,9 @@ import { renderSignalCard } from "./channels.signal";
 import { renderSlackCard } from "./channels.slack";
 import { renderTelegramCard } from "./channels.telegram";
 import { renderWhatsAppCard } from "./channels.whatsapp";
+import { renderFeishuCard } from "./channels.feishu";
+import { renderDingtalkCard } from "./channels.dingtalk";
+import { renderWecomCard } from "./channels.wecom";
 
 export function renderChannels(props: ChannelsProps) {
   const channels = props.snapshot?.channels as Record<string, unknown> | null;
@@ -45,6 +48,9 @@ export function renderChannels(props: ChannelsProps) {
   const signal = (channels?.signal ?? null) as SignalStatus | null;
   const imessage = (channels?.imessage ?? null) as IMessageStatus | null;
   const nostr = (channels?.nostr ?? null) as NostrStatus | null;
+  const feishu = (channels?.feishu ?? null) as Record<string, unknown> | null;
+  const dingtalk = (channels?.dingtalk ?? null) as Record<string, unknown> | null;
+  const wecom = (channels?.wecom ?? null) as Record<string, unknown> | null;
   const channelOrder = resolveChannelOrder(props.snapshot);
   const orderedChannels = channelOrder
     .map((key, index) => ({
@@ -69,6 +75,9 @@ export function renderChannels(props: ChannelsProps) {
           signal,
           imessage,
           nostr,
+          feishu,
+          dingtalk,
+          wecom,
           channelAccounts: props.snapshot?.channelAccounts ?? null,
         }),
       )}
@@ -102,6 +111,9 @@ function resolveChannelOrder(snapshot: ChannelsStatusSnapshot | null): ChannelKe
     return snapshot.channelOrder;
   }
   return [
+    "feishu",
+    "dingtalk",
+    "wecom",
     "whatsapp",
     "telegram",
     "discord",
@@ -123,6 +135,27 @@ function renderChannel(
     data.channelAccounts,
   );
   switch (key) {
+    case "feishu":
+      return renderFeishuCard({
+        props,
+        feishu: data.feishu,
+        feishuAccounts: data.channelAccounts?.feishu ?? [],
+        accountCountLabel,
+      });
+    case "dingtalk":
+      return renderDingtalkCard({
+        props,
+        dingtalk: data.dingtalk,
+        dingtalkAccounts: data.channelAccounts?.dingtalk ?? [],
+        accountCountLabel,
+      });
+    case "wecom":
+      return renderWecomCard({
+        props,
+        wecom: data.wecom,
+        wecomAccounts: data.channelAccounts?.wecom ?? [],
+        accountCountLabel,
+      });
     case "whatsapp":
       return renderWhatsAppCard({
         props,

@@ -58,5 +58,8 @@ export type ChannelsChannelData = {
   signal?: SignalStatus | null;
   imessage?: IMessageStatus | null;
   nostr?: NostrStatus | null;
+  feishu?: Record<string, unknown> | null;
+  dingtalk?: Record<string, unknown> | null;
+  wecom?: Record<string, unknown> | null;
   channelAccounts?: Record<string, ChannelAccountSnapshot[]> | null;
 };
