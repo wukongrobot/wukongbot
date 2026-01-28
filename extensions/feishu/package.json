@@ -1,0 +1,26 @@
+{
+  "name": "clawdbot-plugin-feishu",
+  "version": "1.0.0",
+  "description": "飞书/Lark 平台集成插件",
+  "type": "module",
+  "main": "index.ts",
+  "keywords": [
+    "feishu",
+    "lark",
+    "wukongbot",
+    "clawdbot-plugin"
+  ],
+  "dependencies": {
+    "@larksuiteoapi/node-sdk": "^2.0.0",
+    "express": "^4.18.0"
+  },
+  "devDependencies": {
+    "clawdbot": "workspace:*",
+    "typescript": "^5.0.0",
+    "@types/express": "^4.17.0",
+    "@types/node": "^22.0.0"
+  },
+  "peerDependencies": {
+    "clawdbot": "workspace:*"
+  }
+}

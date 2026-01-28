@@ -1,0 +1,46 @@
+name: Test China IM Platforms
+
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - "extensions/feishu/**"
+      - "extensions/wecom/**"
+      - "extensions/dingtalk/**"
+  pull_request:
+    branches: [main, dev]
+    paths:
+      - "extensions/feishu/**"
+      - "extensions/wecom/**"
+      - "extensions/dingtalk/**"
+
+jobs:
+  test-platforms:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.x]
+        platform: [feishu, wecom, dingtalk]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install platform dependencies
+        working-directory: extensions/${{ matrix.platform }}
+        run: pnpm install
+
+      - name: Build project
+        run: pnpm build

@@ -1,0 +1,23 @@
+{
+  "id": "wecom",
+  "version": "1.0.0",
+  "name": "企业微信集成",
+  "description": "企业微信(WeCom) IM 平台集成,支持消息收发、文件传输、群组管理等功能",
+  "author": "WukongBot Team",
+  "type": "channel",
+  "homepage": "https://github.com/yourusername/wukongbot",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/wukongbot.git",
+    "directory": "extensions/wecom"
+  },
+  "keywords": [
+    "wecom",
+    "wechat-work",
+    "wework",
+    "qywx",
+    "im",
+    "chat",
+    "wukongbot"
+  ]
+}

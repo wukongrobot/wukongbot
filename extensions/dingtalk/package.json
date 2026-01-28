@@ -1,0 +1,28 @@
+{
+  "name": "clawdbot-plugin-dingtalk",
+  "version": "1.0.0",
+  "description": "钉钉平台集成插件",
+  "type": "module",
+  "main": "index.ts",
+  "keywords": [
+    "dingtalk",
+    "dingding",
+    "wukongbot",
+    "clawdbot-plugin"
+  ],
+  "dependencies": {
+    "axios": "^1.6.0",
+    "crypto-js": "^4.2.0",
+    "express": "^4.18.0"
+  },
+  "devDependencies": {
+    "clawdbot": "workspace:*",
+    "typescript": "^5.0.0",
+    "@types/crypto-js": "^4.2.0",
+    "@types/express": "^4.17.0",
+    "@types/node": "^22.0.0"
+  },
+  "peerDependencies": {
+    "clawdbot": "workspace:*"
+  }
+}

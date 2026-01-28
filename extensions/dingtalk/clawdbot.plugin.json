@@ -1,0 +1,21 @@
+{
+  "id": "dingtalk",
+  "version": "1.0.0",
+  "name": "钉钉集成",
+  "description": "钉钉(DingTalk) IM 平台集成,支持消息收发、文件传输、群组管理等功能",
+  "author": "WukongBot Team",
+  "type": "channel",
+  "homepage": "https://github.com/yourusername/wukongbot",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/wukongbot.git",
+    "directory": "extensions/dingtalk"
+  },
+  "keywords": [
+    "dingtalk",
+    "dingding",
+    "im",
+    "chat",
+    "wukongbot"
+  ]
+}

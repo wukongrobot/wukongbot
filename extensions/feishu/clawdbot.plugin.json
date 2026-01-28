@@ -1,0 +1,21 @@
+{
+  "id": "feishu",
+  "version": "1.0.0",
+  "name": "飞书集成",
+  "description": "飞书/Lark IM 平台集成,支持消息收发、文件传输、群组管理等功能",
+  "author": "WukongBot Team",
+  "type": "channel",
+  "homepage": "https://github.com/yourusername/wukongbot",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/wukongbot.git",
+    "directory": "extensions/feishu"
+  },
+  "keywords": [
+    "feishu",
+    "lark",
+    "im",
+    "chat",
+    "wukongbot"
+  ]
+}

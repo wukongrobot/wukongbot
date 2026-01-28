@@ -1,0 +1,28 @@
+{
+  "name": "clawdbot-plugin-wecom",
+  "version": "1.0.0",
+  "description": "企业微信平台集成插件",
+  "type": "module",
+  "main": "index.ts",
+  "keywords": [
+    "wecom",
+    "wechat-work",
+    "wukongbot",
+    "clawdbot-plugin"
+  ],
+  "dependencies": {
+    "axios": "^1.6.0",
+    "express": "^4.18.0",
+    "xml2js": "^0.6.0"
+  },
+  "devDependencies": {
+    "clawdbot": "workspace:*",
+    "typescript": "^5.0.0",
+    "@types/express": "^4.17.0",
+    "@types/node": "^22.0.0",
+    "@types/xml2js": "^0.4.0"
+  },
+  "peerDependencies": {
+    "clawdbot": "workspace:*"
+  }
+}
