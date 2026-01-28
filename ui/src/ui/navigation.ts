@@ -161,27 +161,27 @@ export function titleForTab(tab: Tab) {
 export function subtitleForTab(tab: Tab) {
   switch (tab) {
     case "overview":
-      return "Gateway status, entry points, and a fast health read.";
+      return "网关状态、入口点与快速健康检查。";
     case "channels":
-      return "Manage channels and settings.";
+      return "管理渠道与设置。";
     case "instances":
-      return "Presence beacons from connected clients and nodes.";
+      return "来自已连接客户端与节点的在线信标。";
     case "sessions":
-      return "Inspect active sessions and adjust per-session defaults.";
+      return "查看活动会话并调整会话级默认值。";
     case "cron":
-      return "Schedule wakeups and recurring agent runs.";
+      return "安排唤醒与周期性的 Agent 运行。";
     case "skills":
-      return "Manage skill availability and API key injection.";
+      return "管理技能可用性与 API Key 注入。";
     case "nodes":
-      return "Paired devices, capabilities, and command exposure.";
+      return "已配对设备、能力与命令暴露范围。";
     case "chat":
-      return "Direct gateway chat session for quick interventions.";
+      return "用于快速干预的网关直连对话。";
     case "config":
-      return "Edit ~/.clawdbot/moltbot.json safely.";
+      return "安全编辑 ~/.clawdbot/moltbot.json。";
     case "debug":
-      return "Gateway snapshots, events, and manual RPC calls.";
+      return "网关快照、事件与手动 RPC 调用。";
     case "logs":
-      return "Live tail of the gateway file logs.";
+      return "实时跟踪网关文件日志。";
     default:
       return "";
   }

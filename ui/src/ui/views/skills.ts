@@ -36,25 +36,25 @@ export function renderSkills(props: SkillsProps) {
     <section class="card">
       <div class="row" style="justify-content: space-between;">
         <div>
-          <div class="card-title">Skills</div>
-          <div class="card-sub">Bundled, managed, and workspace skills.</div>
+          <div class="card-title">技能</div>
+          <div class="card-sub">内置、托管与工作区技能。</div>
         </div>
         <button class="btn" ?disabled=${props.loading} @click=${props.onRefresh}>
-          ${props.loading ? "Loading…" : "Refresh"}
+          ${props.loading ? "加载中…" : "刷新"}
         </button>
       </div>
 
       <div class="filters" style="margin-top: 14px;">
         <label class="field" style="flex: 1;">
-          <span>Filter</span>
+          <span>筛选</span>
           <input
             .value=${props.filter}
             @input=${(e: Event) =>
               props.onFilterChange((e.target as HTMLInputElement).value)}
-            placeholder="Search skills"
+            placeholder="搜索技能"
           />
         </label>
-        <div class="muted">${filtered.length} shown</div>
+        <div class="muted">显示 ${filtered.length} 项</div>
       </div>
 
       ${props.error
@@ -62,7 +62,7 @@ export function renderSkills(props: SkillsProps) {
         : nothing}
 
       ${filtered.length === 0
-        ? html`<div class="muted" style="margin-top: 16px;">No skills found.</div>`
+        ? html`<div class="muted" style="margin-top: 16px;">未找到技能。</div>`
         : html`
             <div class="list" style="margin-top: 16px;">
               ${filtered.map((skill) => renderSkill(skill, props))}
@@ -85,8 +85,8 @@ function renderSkill(skill: SkillStatusEntry, props: SkillsProps) {
     ...skill.missing.os.map((o) => `os:${o}`),
   ];
   const reasons: string[] = [];
-  if (skill.disabled) reasons.push("disabled");
-  if (skill.blockedByAllowlist) reasons.push("blocked by allowlist");
+  if (skill.disabled) reasons.push("已禁用");
+  if (skill.blockedByAllowlist) reasons.push("被 allowlist 阻止");
   return html`
     <div class="list-item">
       <div class="list-main">
@@ -97,21 +97,21 @@ function renderSkill(skill: SkillStatusEntry, props: SkillsProps) {
         <div class="chip-row" style="margin-top: 6px;">
           <span class="chip">${skill.source}</span>
           <span class="chip ${skill.eligible ? "chip-ok" : "chip-warn"}">
-            ${skill.eligible ? "eligible" : "blocked"}
+            ${skill.eligible ? "可用" : "已阻止"}
           </span>
-          ${skill.disabled ? html`<span class="chip chip-warn">disabled</span>` : nothing}
+          ${skill.disabled ? html`<span class="chip chip-warn">已禁用</span>` : nothing}
         </div>
         ${missing.length > 0
           ? html`
               <div class="muted" style="margin-top: 6px;">
-                Missing: ${missing.join(", ")}
+                缺少：${missing.join(", ")}
               </div>
             `
           : nothing}
         ${reasons.length > 0
           ? html`
               <div class="muted" style="margin-top: 6px;">
-                Reason: ${reasons.join(", ")}
+                原因：${reasons.join("，")}
               </div>
             `
           : nothing}
@@ -123,7 +123,7 @@ function renderSkill(skill: SkillStatusEntry, props: SkillsProps) {
             ?disabled=${busy}
             @click=${() => props.onToggle(skill.skillKey, skill.disabled)}
           >
-            ${skill.disabled ? "Enable" : "Disable"}
+            ${skill.disabled ? "启用" : "禁用"}
           </button>
           ${canInstall
             ? html`<button
@@ -132,7 +132,7 @@ function renderSkill(skill: SkillStatusEntry, props: SkillsProps) {
                 @click=${() =>
                   props.onInstall(skill.skillKey, skill.name, skill.install[0].id)}
               >
-                ${busy ? "Installing…" : skill.install[0].label}
+                ${busy ? "安装中…" : skill.install[0].label}
               </button>`
             : nothing}
         </div>
@@ -151,7 +151,7 @@ function renderSkill(skill: SkillStatusEntry, props: SkillsProps) {
         ${skill.primaryEnv
           ? html`
               <div class="field" style="margin-top: 10px;">
-                <span>API key</span>
+                <span>API Key</span>
                 <input
                   type="password"
                   .value=${apiKey}
@@ -165,7 +165,7 @@ function renderSkill(skill: SkillStatusEntry, props: SkillsProps) {
                 ?disabled=${busy}
                 @click=${() => props.onSaveKey(skill.skillKey)}
               >
-                Save key
+                保存 Key
               </button>
             `
           : nothing}

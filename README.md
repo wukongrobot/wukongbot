@@ -1,10 +1,6 @@
 # 🐵 悟空Bot — 你的私人AI助手
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/moltbot/moltbot/main/docs/whatsapp-clawd.jpg" alt="WukongBot" width="400">
-</p>
-
-<p align="center">
   <strong>七十二变,无所不能!</strong>
 </p>
 
@@ -23,7 +19,7 @@
 ## ✨ 特性亮点
 
 ### 🇨🇳 国产化支持
-- **国产 IM 平台**: 飞书、企业微信、钉钉、微信(即将支持)
+- **国产 IM 平台**: 飞书、企业微信、钉钉
 - **国产大模型**: DeepSeek、千问(Qwen)、Kimi、豆包、硅基流动、智谱(GLM)等
 - **简化安装**: 一键安装脚本,无需复杂配置
 - **中文优先**: 完整的中文文档和社区支持
