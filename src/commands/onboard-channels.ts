@@ -309,8 +309,10 @@ export async function setupChannels(
     blurb: meta.blurb,
   }));
   const coreIds = new Set(corePrimer.map((entry) => entry.id));
-  const primerChannels = [
-    ...corePrimer,
+
+  // 国产IM频道（优先显示）
+  const chinaChannels = ["feishu", "wecom", "dingtalk"];
+  const pluginChannels = [
     ...installedPlugins
       .filter((plugin) => !coreIds.has(plugin.id as ChannelChoice))
       .map((plugin) => ({
@@ -326,6 +328,13 @@ export async function setupChannels(
         blurb: entry.meta.blurb,
       })),
   ];
+
+  // 分离国产频道和其他频道
+  const chinaPlugins = pluginChannels.filter((ch) => chinaChannels.includes(ch.id));
+  const otherPlugins = pluginChannels.filter((ch) => !chinaChannels.includes(ch.id));
+
+  // 🇨🇳 国产频道优先，然后核心频道，最后其他插件频道
+  const primerChannels = [...chinaPlugins, ...corePrimer, ...otherPlugins];
   await noteChannelPrimer(prompter, primerChannels);
 
   const quickstartDefault =

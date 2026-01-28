@@ -164,3 +164,16 @@ export async function setOpencodeZenApiKey(key: string, agentDir?: string) {
     agentDir: resolveAuthAgentDir(agentDir),
   });
 }
+
+export async function setSiliconFlowApiKey(key: string, agentDir?: string) {
+  // Write to resolved agent dir so gateway finds credentials on startup.
+  upsertAuthProfile({
+    profileId: "siliconflow:default",
+    credential: {
+      type: "api_key",
+      provider: "siliconflow",
+      key,
+    },
+    agentDir: resolveAuthAgentDir(agentDir),
+  });
+}

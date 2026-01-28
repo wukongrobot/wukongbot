@@ -38,10 +38,11 @@ const AUTH_CHOICE_GROUP_DEFS: {
   hint?: string;
   choices: AuthChoice[];
 }[] = [
+  // 中国大模型（按推荐度排序）
   {
     value: "deepseek",
     label: "DeepSeek (深度求索)",
-    hint: "API key (推荐)",
+    hint: "API key (推荐国产模型)",
     choices: ["openai-api-key"],
   },
   {
@@ -59,7 +60,7 @@ const AUTH_CHOICE_GROUP_DEFS: {
   {
     value: "siliconflow",
     label: "SiliconFlow (硅基流动)",
-    hint: "API key (多模型)",
+    hint: "API key (多模型支持)",
     choices: ["openai-api-key"],
   },
   {
@@ -80,6 +81,8 @@ const AUTH_CHOICE_GROUP_DEFS: {
     hint: "M2.1 (推荐)",
     choices: ["minimax-api", "minimax-api-lightning"],
   },
+
+  // 🌍 国际大模型
   {
     value: "openai",
     label: "OpenAI",
@@ -91,48 +94,6 @@ const AUTH_CHOICE_GROUP_DEFS: {
     label: "Anthropic",
     hint: "setup-token + API key",
     choices: ["token", "apiKey"],
-  },
-  {
-    value: "minimax",
-    label: "MiniMax",
-    hint: "M2.1 (recommended)",
-    choices: ["minimax-api", "minimax-api-lightning"],
-  },
-  {
-    value: "qwen",
-    label: "Qwen (通义千问)",
-    hint: "OAuth / API key",
-    choices: ["qwen-portal"],
-  },
-  {
-    value: "deepseek",
-    label: "DeepSeek (深度求索)",
-    hint: "API key (推荐国产模型)",
-    choices: ["openai-api-key"],
-  },
-  {
-    value: "siliconflow",
-    label: "SiliconFlow (硅基流动)",
-    hint: "API key (多模型支持)",
-    choices: ["openai-api-key"],
-  },
-  {
-    value: "doubao",
-    label: "Doubao (豆包)",
-    hint: "API key (字节跳动)",
-    choices: ["openai-api-key"],
-  },
-  {
-    value: "synthetic",
-    label: "Synthetic",
-    hint: "Anthropic-compatible (multi-model)",
-    choices: ["synthetic-api-key"],
-  },
-  {
-    value: "venice",
-    label: "Venice AI",
-    hint: "Privacy-focused (uncensored models)",
-    choices: ["venice-api-key"],
   },
   {
     value: "google",
@@ -149,8 +110,20 @@ const AUTH_CHOICE_GROUP_DEFS: {
   {
     value: "openrouter",
     label: "OpenRouter",
-    hint: "API key",
+    hint: "API key (多模型聚合)",
     choices: ["openrouter-api-key"],
+  },
+  {
+    value: "synthetic",
+    label: "Synthetic",
+    hint: "Anthropic-compatible",
+    choices: ["synthetic-api-key"],
+  },
+  {
+    value: "venice",
+    label: "Venice AI",
+    hint: "Privacy-focused",
+    choices: ["venice-api-key"],
   },
   {
     value: "ai-gateway",

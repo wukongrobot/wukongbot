@@ -4,14 +4,15 @@ import { requireActivePluginRegistry } from "../plugins/runtime.js";
 
 // Channel docking: add new core channels here (order + meta + aliases), then
 // register the plugin in its extension entrypoint and keep protocol IDs in sync.
+// 核心频道排序：常用和易用的平台优先
 export const CHAT_CHANNEL_ORDER = [
-  "telegram",
-  "whatsapp",
-  "discord",
-  "googlechat",
-  "slack",
-  "signal",
-  "imessage",
+  "telegram", // 最简单，中国用户常用
+  "whatsapp", // 全球流行，易用
+  "discord", // 开发者社区常用
+  "slack", // 企业协作
+  "googlechat", // Google Workspace
+  "signal", // 需要更多设置
+  "imessage", // 仅限 macOS/iOS
 ] as const;
 
 export type ChatChannelId = (typeof CHAT_CHANNEL_ORDER)[number];

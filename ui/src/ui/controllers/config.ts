@@ -44,6 +44,11 @@ export async function loadConfig(state: ConfigState) {
   state.lastError = null;
   try {
     const res = (await state.client.request("config.get", {})) as ConfigSnapshot;
+    // 检查响应是否有效
+    if (!res || typeof res !== "object") {
+      state.lastError = "Invalid config response from server";
+      return;
+    }
     applyConfigSnapshot(state, res);
   } catch (err) {
     state.lastError = String(err);
@@ -79,11 +84,16 @@ export function applyConfigSchema(
 }
 
 export function applyConfigSnapshot(state: ConfigState, snapshot: ConfigSnapshot) {
+  // 确保 snapshot 有效
+  if (!snapshot || typeof snapshot !== "object") {
+    return;
+  }
+  
   state.configSnapshot = snapshot;
   const rawFromSnapshot =
     typeof snapshot.raw === "string"
       ? snapshot.raw
-      : snapshot.config && typeof snapshot.config === "object"
+      : snapshot.raw === null && snapshot.config && typeof snapshot.config === "object"
         ? serializeConfigForm(snapshot.config as Record<string, unknown>)
         : state.configRaw;
   if (!state.configFormDirty || state.configFormMode === "raw") {

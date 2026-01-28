@@ -116,3 +116,29 @@ export function buildKimiCodeModelDefinition(): ModelDefinitionConfig {
     compat: KIMI_CODE_COMPAT,
   };
 }
+
+// SiliconFlow (硅基流动)
+export const SILICONFLOW_BASE_URL = "https://api.siliconflow.cn/v1";
+export const SILICONFLOW_DEFAULT_MODEL_ID = "deepseek-ai/DeepSeek-V3";
+export const SILICONFLOW_DEFAULT_MODEL_REF = `siliconflow/${SILICONFLOW_DEFAULT_MODEL_ID}`;
+export const SILICONFLOW_DEFAULT_CONTEXT_WINDOW = 128000;
+export const SILICONFLOW_DEFAULT_MAX_TOKENS = 8192;
+export const SILICONFLOW_DEFAULT_COST = {
+  input: 0,
+  output: 0,
+  cacheRead: 0,
+  cacheWrite: 0,
+};
+
+export function buildSiliconFlowModelDefinition(): ModelDefinitionConfig {
+  return {
+    id: SILICONFLOW_DEFAULT_MODEL_ID,
+    name: "DeepSeek V3 (硅基流动)",
+    api: "openai-completions",
+    reasoning: false,
+    input: ["text"],
+    cost: SILICONFLOW_DEFAULT_COST,
+    contextWindow: SILICONFLOW_DEFAULT_CONTEXT_WINDOW,
+    maxTokens: SILICONFLOW_DEFAULT_MAX_TOKENS,
+  };
+}
