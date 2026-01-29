@@ -85,7 +85,7 @@ Save to `~/.clawdbot/moltbot.json` and you can DM the bot from that number.
   // Logging
   logging: {
     level: "info",
-    file: "/tmp/moltbot/moltbot.log",
+    file: "/tmp/wukongbot/wukongbot.log",
     consoleLevel: "info",
     consoleStyle: "pretty",
     redactSensitive: "tools"

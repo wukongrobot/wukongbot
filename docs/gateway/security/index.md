@@ -310,7 +310,7 @@ This is social engineering 101. Create distrust, encourage snooping.
 ### 0) File permissions
 
 Keep config + state private on the gateway host:
-- `~/.moltbot/moltbot.json`: `600` (user read/write only)
+- `~/.wukongbot/wukongbot.json`: `600` (user read/write only)
 - `~/.moltbot`: `700` (user only)
 
 `moltbot doctor` can warn and offer to tighten these permissions.
@@ -689,7 +689,7 @@ If your AI does something bad:
 
 ### Audit
 
-1. Check Gateway logs: `/tmp/moltbot/moltbot-YYYY-MM-DD.log` (or `logging.file`).
+1. Check Gateway logs: `/tmp/wukongbot/wukongbot-YYYY-MM-DD.log` (or `logging.file`).
 2. Review the relevant transcript(s): `~/.moltbot/agents/<agentId>/sessions/*.jsonl`.
 3. Review recent config changes (anything that could have widened access: `gateway.bind`, `gateway.auth`, dm/group policies, `tools.elevated`, plugin changes).
 

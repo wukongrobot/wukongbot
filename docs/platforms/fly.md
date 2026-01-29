@@ -25,7 +25,7 @@ description: Deploy Moltbot on Fly.io
 
 ```bash
 # Clone the repo
-git clone https://github.com/moltbot/moltbot.git
+git clone https://github.com/wukongrobot/wukongbot.git
 cd moltbot
 
 # Create a new Fly app (pick your own name)

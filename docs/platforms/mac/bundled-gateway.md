@@ -43,7 +43,7 @@ Behavior:
   it instead of starting a new one.
 
 Logging:
-- launchd stdout/err: `/tmp/moltbot/moltbot-gateway.log`
+- launchd stdout/err: `/tmp/wukongbot/wukongbot-gateway.log`
 
 ## Version compatibility
 

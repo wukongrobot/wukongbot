@@ -105,7 +105,7 @@ Doctor/service will show runtime state (PID/last exit) and log hints.
 
 **Logs:**
 - Preferred: `moltbot logs --follow`
-- File logs (always): `/tmp/moltbot/moltbot-YYYY-MM-DD.log` (or your configured `logging.file`)
+- File logs (always): `/tmp/wukongbot/wukongbot-YYYY-MM-DD.log` (or your configured `logging.file`)
 - macOS LaunchAgent (if installed): `$CLAWDBOT_STATE_DIR/logs/gateway.log` and `gateway.err.log`
 - Linux systemd (if installed): `journalctl --user -u moltbot-gateway[-<profile>].service -n 200 --no-pager`
 - Windows: `schtasks /Query /TN "Moltbot Gateway (<profile>)" /V /FO LIST`
@@ -299,7 +299,7 @@ grep -n "agents\\|groupChat\\|mentionPatterns\\|channels\\.whatsapp\\.groups\\|c
 ```bash
 moltbot logs --follow
 # or if you want quick filters:
-tail -f "$(ls -t /tmp/moltbot/moltbot-*.log | head -1)" | grep "blocked\\|skip\\|unauthorized"
+tail -f "$(ls -t /tmp/wukongbot/wukongbot-*.log | head -1)" | grep "blocked\\|skip\\|unauthorized"
 ```
 
 ### Pairing Code Not Arriving
@@ -404,7 +404,7 @@ ls -la /path/to/your/image.jpg
 
 **Check 3:** Check media logs
 ```bash
-grep "media\\|fetch\\|download" "$(ls -t /tmp/moltbot/moltbot-*.log | head -1)" | tail -20
+grep "media\\|fetch\\|download" "$(ls -t /tmp/wukongbot/wukongbot-*.log | head -1)" | tail -20
 ```
 
 ### High Memory Usage
@@ -580,7 +580,7 @@ tccutil reset All bot.molt.mac.debug
 ```
 
 **Fix 2: Force New Bundle ID**
-If resetting doesn't work, change the `BUNDLE_ID` in [`scripts/package-mac-app.sh`](https://github.com/moltbot/moltbot/blob/main/scripts/package-mac-app.sh) (e.g., add a `.test` suffix) and rebuild. This forces macOS to treat it as a new app.
+If resetting doesn't work, change the `BUNDLE_ID` in [`scripts/package-mac-app.sh`](https://github.com/wukongrobot/wukongbot/blob/main/scripts/package-mac-app.sh) (e.g., add a `.test` suffix) and rebuild. This forces macOS to treat it as a new app.
 
 ### Gateway stuck on "Starting..."
 
@@ -630,7 +630,7 @@ moltbot channels login --verbose
 
 | Log | Location |
 |-----|----------|
-| Gateway file logs (structured) | `/tmp/moltbot/moltbot-YYYY-MM-DD.log` (or `logging.file`) |
+| Gateway file logs (structured) | `/tmp/wukongbot/wukongbot-YYYY-MM-DD.log` (or `logging.file`) |
 | Gateway service logs (supervisor) | macOS: `$CLAWDBOT_STATE_DIR/logs/gateway.log` + `gateway.err.log` (default: `~/.clawdbot/logs/...`; profiles use `~/.clawdbot-<profile>/logs/...`)<br />Linux: `journalctl --user -u moltbot-gateway[-<profile>].service -n 200 --no-pager`<br />Windows: `schtasks /Query /TN "Moltbot Gateway (<profile>)" /V /FO LIST` |
 | Session files | `$CLAWDBOT_STATE_DIR/agents/<agentId>/sessions/` |
 | Media cache | `$CLAWDBOT_STATE_DIR/media/` |
@@ -655,7 +655,7 @@ lsof -nP -iTCP:18789 -sTCP:LISTEN
 # Recent activity (RPC log tail)
 moltbot logs --follow
 # Fallback if RPC is down
-tail -20 /tmp/moltbot/moltbot-*.log
+tail -20 /tmp/wukongbot/wukongbot-*.log
 ```
 
 ## Reset Everything

@@ -14,7 +14,7 @@ read_when:
 
 ## Model latency bench (local keys)
 
-Script: [`scripts/bench-model.ts`](https://github.com/moltbot/moltbot/blob/main/scripts/bench-model.ts)
+Script: [`scripts/bench-model.ts`](https://github.com/wukongrobot/wukongbot/blob/main/scripts/bench-model.ts)
 
 Usage:
 - `source ~/.profile && pnpm tsx scripts/bench-model.ts --runs 10`

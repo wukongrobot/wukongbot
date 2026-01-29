@@ -344,7 +344,7 @@ WhatsApp sends audio as **voice notes** (PTT bubble).
 
 ## Logs + troubleshooting
 - Subsystems: `whatsapp/inbound`, `whatsapp/outbound`, `web-heartbeat`, `web-reconnect`.
-- Log file: `/tmp/moltbot/moltbot-YYYY-MM-DD.log` (configurable).
+- Log file: `/tmp/wukongbot/wukongbot-YYYY-MM-DD.log` (configurable).
 - Troubleshooting guide: [Gateway troubleshooting](/gateway/troubleshooting).
 
 ## Troubleshooting (quick)

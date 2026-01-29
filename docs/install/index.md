@@ -88,7 +88,7 @@ moltbot onboard --install-daemon
 ### 3) From source (contributors/dev)
 
 ```bash
-git clone https://github.com/moltbot/moltbot.git
+git clone https://github.com/wukongrobot/wukongbot.git
 cd moltbot
 pnpm install
 pnpm ui:build # auto-installs UI deps on first run

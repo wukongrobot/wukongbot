@@ -5,7 +5,7 @@
         <item>
             <title>2026.1.24-1</title>
             <pubDate>Sun, 25 Jan 2026 14:05:25 +0000</pubDate>
-            <link>https://raw.githubusercontent.com/moltbot/moltbot/main/appcast.xml</link>
+            <link>https://raw.githubusercontent.com/wukongrobot/wukongbot/main/appcast.xml</link>
             <sparkle:version>7952</sparkle:version>
             <sparkle:shortVersionString>2026.1.24-1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
@@ -14,14 +14,14 @@
 <ul>
 <li>Packaging: include dist/shared output in npm tarball (fixes missing reasoning-tags import on install).</li>
 </ul>
-<p><a href="https://github.com/moltbot/moltbot/blob/main/CHANGELOG.md">View full changelog</a></p>
+<p><a href="https://github.com/wukongrobot/wukongbot/blob/main/CHANGELOG.md">View full changelog</a></p>
 ]]></description>
-            <enclosure url="https://github.com/moltbot/moltbot/releases/download/v2026.1.24-1/Moltbot-2026.1.24-1.zip" length="12396699" type="application/octet-stream" sparkle:edSignature="VaEdWIgEJBrZLIp2UmigoQ6vaq4P/jNFXpHYXvXHD5MsATS0CqBl6ugyyxRq+/GbpUqmdgdlht4dTUVbLRw6BA=="/>
+            <enclosure url="https://github.com/wukongrobot/wukongbot/releases/download/v2026.1.24-1/Moltbot-2026.1.24-1.zip" length="12396699" type="application/octet-stream" sparkle:edSignature="VaEdWIgEJBrZLIp2UmigoQ6vaq4P/jNFXpHYXvXHD5MsATS0CqBl6ugyyxRq+/GbpUqmdgdlht4dTUVbLRw6BA=="/>
         </item>
         <item>
             <title>2026.1.24</title>
             <pubDate>Sun, 25 Jan 2026 13:31:05 +0000</pubDate>
-            <link>https://raw.githubusercontent.com/moltbot/moltbot/main/appcast.xml</link>
+            <link>https://raw.githubusercontent.com/wukongrobot/wukongbot/main/appcast.xml</link>
             <sparkle:version>7944</sparkle:version>
             <sparkle:shortVersionString>2026.1.24</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
@@ -93,14 +93,14 @@
 <li>Tests: avoid fake-timer dependency in embedded runner stream mock to reduce CI flakes. (#1597) Thanks @rohannagpal.</li>
 <li>Tests: increase embedded runner ordering test timeout to reduce CI flakes. (#1597) Thanks @rohannagpal.</li>
 </ul>
-<p><a href="https://github.com/moltbot/moltbot/blob/main/CHANGELOG.md">View full changelog</a></p>
+<p><a href="https://github.com/wukongrobot/wukongbot/blob/main/CHANGELOG.md">View full changelog</a></p>
 ]]></description>
-            <enclosure url="https://github.com/moltbot/moltbot/releases/download/v2026.1.24/Moltbot-2026.1.24.zip" length="12396700" type="application/octet-stream" sparkle:edSignature="u+XzKD3YwV8s79gIr7LK4OtDCcmp/b+cjNC6SHav3/1CVJegh02SsBKatrampox32XGx8P2+8c/+fHV+qpkHCA=="/>
+            <enclosure url="https://github.com/wukongrobot/wukongbot/releases/download/v2026.1.24/Moltbot-2026.1.24.zip" length="12396700" type="application/octet-stream" sparkle:edSignature="u+XzKD3YwV8s79gIr7LK4OtDCcmp/b+cjNC6SHav3/1CVJegh02SsBKatrampox32XGx8P2+8c/+fHV+qpkHCA=="/>
         </item>
         <item>
             <title>2026.1.23</title>
             <pubDate>Sat, 24 Jan 2026 13:02:18 +0000</pubDate>
-            <link>https://raw.githubusercontent.com/moltbot/moltbot/main/appcast.xml</link>
+            <link>https://raw.githubusercontent.com/wukongrobot/wukongbot/main/appcast.xml</link>
             <sparkle:version>7750</sparkle:version>
             <sparkle:shortVersionString>2026.1.23</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
@@ -180,9 +180,9 @@
 <li>Browser: keep extension relay tabs controllable when the extension reuses a session id after switching tabs. (#1160)</li>
 <li>Agents: warn and ignore tool allowlists that only reference unknown or unloaded plugin tools. (#1566)</li>
 </ul>
-<p><a href="https://github.com/moltbot/moltbot/blob/main/CHANGELOG.md">View full changelog</a></p>
+<p><a href="https://github.com/wukongrobot/wukongbot/blob/main/CHANGELOG.md">View full changelog</a></p>
 ]]></description>
-            <enclosure url="https://github.com/moltbot/moltbot/releases/download/v2026.1.23/Moltbot-2026.1.23.zip" length="22326233" type="application/octet-stream" sparkle:edSignature="p40dFczUfmMpsif4BrEUYVqUPG2WiBXleWgefwu4WiqjuyXbw7CAaH5CpQKig/k2qRLlE59kX7AR/qJqmy+yCA=="/>
+            <enclosure url="https://github.com/wukongrobot/wukongbot/releases/download/v2026.1.23/Moltbot-2026.1.23.zip" length="22326233" type="application/octet-stream" sparkle:edSignature="p40dFczUfmMpsif4BrEUYVqUPG2WiBXleWgefwu4WiqjuyXbw7CAaH5CpQKig/k2qRLlE59kX7AR/qJqmy+yCA=="/>
         </item>
     </channel>
 </rss>

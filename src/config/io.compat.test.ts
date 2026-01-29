@@ -28,7 +28,7 @@ async function writeConfig(
 }
 
 describe("config io compat (new + legacy folders)", () => {
-  it("prefers ~/.moltbot/moltbot.json when both configs exist", async () => {
+  it("prefers ~/.wukongbot/wukongbot.json when both configs exist", async () => {
     await withTempHome(async (home) => {
       const newConfigPath = await writeConfig(home, ".moltbot", 19001);
       await writeConfig(home, ".clawdbot", 18789);

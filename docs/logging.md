@@ -20,7 +20,7 @@ levels and formats.
 
 By default, the Gateway writes a rolling log file under:
 
-`/tmp/moltbot/moltbot-YYYY-MM-DD.log`
+`/tmp/wukongbot/wukongbot-YYYY-MM-DD.log`
 
 The date uses the gateway host's local timezone.
 
@@ -103,7 +103,7 @@ All logging configuration lives under `logging` in `~/.clawdbot/moltbot.json`.
 {
   "logging": {
     "level": "info",
-    "file": "/tmp/moltbot/moltbot-YYYY-MM-DD.log",
+    "file": "/tmp/wukongbot/wukongbot-YYYY-MM-DD.log",
     "consoleLevel": "info",
     "consoleStyle": "pretty",
     "redactSensitive": "tools",

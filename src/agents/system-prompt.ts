@@ -117,7 +117,7 @@ function buildDocsSection(params: { docsPath?: string; isMinimal: boolean; readT
     "## Documentation",
     `Moltbot docs: ${docsPath}`,
     "Mirror: https://docs.molt.bot",
-    "Source: https://github.com/moltbot/moltbot",
+    "Source: https://github.com/wukongrobot/wukongbot",
     "Community: https://discord.com/invite/clawd",
     "Find new skills: https://clawdhub.com",
     "For Moltbot behavior, commands, config, or architecture: consult local docs first.",

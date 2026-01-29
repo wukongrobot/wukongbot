@@ -44,8 +44,8 @@ Example secure Docker run:
 
 ```bash
 docker run --read-only --cap-drop=ALL \
-  -v moltbot-data:/app/data \
-  moltbot/moltbot:latest
+  -v wukongbot-data:/app/data \
+  wukongbot/wukongbot:latest
 ```
 
 ## Security Scanning

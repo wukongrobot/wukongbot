@@ -96,7 +96,7 @@ docker compose version
 ## 3) Clone the Moltbot repository
 
 ```bash
-git clone https://github.com/moltbot/moltbot.git
+git clone https://github.com/wukongrobot/wukongbot.git
 cd moltbot
 ```
 

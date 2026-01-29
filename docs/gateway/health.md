@@ -13,7 +13,7 @@ Short guide to verify channel connectivity without guessing.
 - `moltbot status --deep` — also probes the running Gateway (per-channel probes when supported).
 - `moltbot health --json` — asks the running Gateway for a full health snapshot (WS-only; no direct Baileys socket).
 - Send `/status` as a standalone message in WhatsApp/WebChat to get a status reply without invoking the agent.
-- Logs: tail `/tmp/moltbot/moltbot-*.log` and filter for `web-heartbeat`, `web-reconnect`, `web-auto-reply`, `web-inbound`.
+- Logs: tail `/tmp/wukongbot/wukongbot-*.log` and filter for `web-heartbeat`, `web-reconnect`, `web-auto-reply`, `web-inbound`.
 
 ## Deep diagnostics
 - Creds on disk: `ls -l ~/.clawdbot/credentials/whatsapp/<accountId>/creds.json` (mtime should be recent).

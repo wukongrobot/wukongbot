@@ -116,7 +116,7 @@ curl -fsSL https://molt.bot/install.sh | bash
 ### Option B: Hackable Install (For tinkering)
 
 ```bash
-git clone https://github.com/moltbot/moltbot.git
+git clone https://github.com/wukongrobot/wukongbot.git
 cd moltbot
 npm install
 npm run build

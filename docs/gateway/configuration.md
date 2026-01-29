@@ -444,8 +444,8 @@ Metadata written by CLI wizards (`onboard`, `configure`, `doctor`).
 
 ### `logging`
 
-- Default log file: `/tmp/moltbot/moltbot-YYYY-MM-DD.log`
-- If you want a stable path, set `logging.file` to `/tmp/moltbot/moltbot.log`.
+- Default log file: `/tmp/wukongbot/wukongbot-YYYY-MM-DD.log`
+- If you want a stable path, set `logging.file` to `/tmp/wukongbot/wukongbot.log`.
 - Console output can be tuned separately via:
   - `logging.consoleLevel` (defaults to `info`, bumps to `debug` when `--verbose`)
   - `logging.consoleStyle` (`pretty` | `compact` | `json`)
@@ -457,7 +457,7 @@ Metadata written by CLI wizards (`onboard`, `configure`, `doctor`).
 {
   logging: {
     level: "info",
-    file: "/tmp/moltbot/moltbot.log",
+    file: "/tmp/wukongbot/wukongbot.log",
     consoleLevel: "info",
     consoleStyle: "pretty",
     redactSensitive: "tools",

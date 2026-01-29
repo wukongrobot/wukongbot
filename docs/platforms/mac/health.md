@@ -25,4 +25,4 @@ How to see whether the linked channel is healthy from the menu bar app.
 - Cache the last good snapshot and the last error separately to avoid flicker; show the timestamp of each.
 
 ## When in doubt
-- You can still use the CLI flow in [Gateway health](/gateway/health) (`moltbot status`, `moltbot status --deep`, `moltbot health --json`) and tail `/tmp/moltbot/moltbot-*.log` for `web-heartbeat` / `web-reconnect`.
+- You can still use the CLI flow in [Gateway health](/gateway/health) (`moltbot status`, `moltbot status --deep`, `moltbot health --json`) and tail `/tmp/wukongbot/wukongbot-*.log` for `web-heartbeat` / `web-reconnect`.

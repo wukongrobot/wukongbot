@@ -272,7 +272,7 @@ Unknown frame types are preserved as raw payloads for forward compatibility.
 Generated JSON Schema is in the repo at `dist/protocol.schema.json`. The
 published raw file is typically available at:
 
-- https://raw.githubusercontent.com/moltbot/moltbot/main/dist/protocol.schema.json
+- https://raw.githubusercontent.com/wukongrobot/wukongbot/main/dist/protocol.schema.json
 
 ## When you change schemas
 

@@ -114,7 +114,7 @@ const MAX_LOG_CHARS = 8000;
 const DEFAULT_PACKAGE_NAME = "moltbot";
 const CORE_PACKAGE_NAMES = new Set([DEFAULT_PACKAGE_NAME, "moltbot"]);
 const CLI_NAME = resolveCliName();
-const CLAWDBOT_REPO_URL = "https://github.com/moltbot/moltbot.git";
+const CLAWDBOT_REPO_URL = "https://github.com/wukongrobot/wukongbot.git";
 const DEFAULT_GIT_DIR = path.join(os.homedir(), "moltbot");
 
 function normalizeTag(value?: string | null): string | null {

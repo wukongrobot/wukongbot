@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/moltbot/moltbot/actions/workflows/ci.yml?branch=main"><img src="https://img.shields.io/github/actions/workflow/status/moltbot/moltbot/ci.yml?branch=main&style=for-the-badge" alt="CI status"></a>
-  <a href="https://github.com/moltbot/moltbot/releases"><img src="https://img.shields.io/github/v/release/moltbot/moltbot?include_prereleases&style=for-the-badge" alt="GitHub release"></a>
+  <a href="https://github.com/wukongrobot/wukongbot/actions/workflows/ci.yml?branch=main"><img src="https://img.shields.io/github/actions/workflow/status/wukongrobot/wukongbot/ci.yml?branch=main&style=for-the-badge" alt="CI status"></a>
+  <a href="https://github.com/wukongrobot/wukongbot/releases"><img src="https://img.shields.io/github/v/release/wukongrobot/wukongbot?include_prereleases&style=for-the-badge" alt="GitHub release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License"></a>
 </p>
 
@@ -337,13 +337,13 @@ AI/氛围编码的 PR 欢迎! 🤖
 
 ## 📞 社区与支持
 
-- 💬 讨论: [GitHub Discussions](https://github.com/yourusername/wukongbot/discussions)
-- 🐛 问题: [GitHub Issues](https://github.com/yourusername/wukongbot/issues)
+- 💬 讨论: [GitHub Discussions](https://github.com/wukongrobot/wukongbot/discussions)
+- 🐛 问题: [GitHub Issues](https://github.com/wukongrobot/wukongbot/issues)
 - 📧 邮件: support@wukongbot.cn (即将开通)
 
 ## 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/wukongbot&type=Date)](https://star-history.com/#yourusername/wukongbot&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=wukongrobot/wukongbot&type=Date)](https://star-history.com/#wukongrobot/wukongbot&Date)
 
 ---
 
