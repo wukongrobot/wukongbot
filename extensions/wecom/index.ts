@@ -1,16 +1,16 @@
-/**
- * 企业微信插件入口
- */
+import type { MoltbotPluginApi } from "clawdbot/plugin-sdk";
+import { emptyPluginConfigSchema } from "clawdbot/plugin-sdk";
 
-import type { PluginApi } from "../../src/plugin-sdk/index.js";
 import { createWeComChannelPlugin } from "./src/channel.js";
 
-export default {
+const plugin = {
   id: "wecom",
-  register(api: PluginApi) {
-    api.registerChannel(createWeComChannelPlugin());
+  name: "企业微信",
+  description: "企业微信 (WeCom) channel plugin",
+  configSchema: emptyPluginConfigSchema(),
+  register(api: MoltbotPluginApi) {
+    api.registerChannel({ plugin: createWeComChannelPlugin() });
   },
 };
 
-export type { WeComConfig, WeComMessage } from "./src/types.js";
-export { WeComClient } from "./src/sdk.js";
+export default plugin;

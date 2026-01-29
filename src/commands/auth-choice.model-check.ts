@@ -7,6 +7,7 @@ import { resolveConfiguredModelRef } from "../agents/model-selection.js";
 import type { MoltbotConfig } from "../config/config.js";
 import type { WizardPrompter } from "../wizard/prompts.js";
 import { OPENAI_CODEX_DEFAULT_MODEL } from "./openai-codex-model-default.js";
+import { CHINA_MODEL_PRESETS, isChinaProvider } from "../agents/china-models-preset.js";
 
 export async function warnIfModelConfigLooksOff(
   config: MoltbotConfig,
@@ -40,28 +41,55 @@ export async function warnIfModelConfigLooksOff(
     defaultModel: DEFAULT_MODEL,
   });
   const warnings: string[] = [];
-  const catalog = await loadModelCatalog({
+  let catalog = await loadModelCatalog({
     config: configWithModel,
     useCache: false,
   });
+
+  // 补充国产模型预设到 catalog
+  if (isChinaProvider(ref.provider)) {
+    const providerPreset = CHINA_MODEL_PRESETS.find((p) => p.provider === ref.provider);
+    if (providerPreset) {
+      const existingIds = new Set(
+        catalog.filter((e) => e.provider === ref.provider).map((e) => e.id.toLowerCase()),
+      );
+      for (const preset of providerPreset.models) {
+        if (!existingIds.has(preset.id.toLowerCase())) {
+          catalog.push({
+            id: preset.id,
+            name: preset.name,
+            provider: ref.provider,
+            contextWindow: preset.contextWindow,
+            reasoning: preset.reasoning,
+          });
+        }
+      }
+    }
+  }
+
   if (catalog.length > 0) {
     const known = catalog.some(
       (entry) => entry.provider === ref.provider && entry.id === ref.model,
     );
     if (!known) {
       warnings.push(
-        `Model not found: ${ref.provider}/${ref.model}. Update agents.defaults.model or run /models list.`,
+        `未找到模型: ${ref.provider}/${ref.model}. 更新 agents.defaults.model 或运行 /models list.`,
       );
     }
   }
 
   const store = ensureAuthProfileStore(options?.agentDir);
-  const hasProfile = listProfilesForProvider(store, ref.provider).length > 0;
-  const envKey = resolveEnvApiKey(ref.provider);
-  const customKey = getCustomProviderApiKey(config, ref.provider);
+
+  // 某些国产厂商使用 OpenAI 兼容的 API，需要检查 openai 的认证配置
+  const openaiCompatibleProviders = ["deepseek", "siliconflow", "doubao"];
+  const authProvider = openaiCompatibleProviders.includes(ref.provider) ? "openai" : ref.provider;
+
+  const hasProfile = listProfilesForProvider(store, authProvider).length > 0;
+  const envKey = resolveEnvApiKey(authProvider);
+  const customKey = getCustomProviderApiKey(config, authProvider);
   if (!hasProfile && !envKey && !customKey) {
     warnings.push(
-      `No auth configured for provider "${ref.provider}". The agent may fail until credentials are added.`,
+      `未配置提供者 "${ref.provider}" 的认证。 代理可能无法正常工作，直到凭证添加为止。`,
     );
   }
 
@@ -69,12 +97,12 @@ export async function warnIfModelConfigLooksOff(
     const hasCodex = listProfilesForProvider(store, "openai-codex").length > 0;
     if (hasCodex) {
       warnings.push(
-        `Detected OpenAI Codex OAuth. Consider setting agents.defaults.model to ${OPENAI_CODEX_DEFAULT_MODEL}.`,
+        `检测到 OpenAI Codex OAuth。 考虑将 agents.defaults.model 设置为 ${OPENAI_CODEX_DEFAULT_MODEL}。`,
       );
     }
   }
 
   if (warnings.length > 0) {
-    await prompter.note(warnings.join("\n"), "Model check");
+    await prompter.note(warnings.join("\n"), "模型检查");
   }
 }

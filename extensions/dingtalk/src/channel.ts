@@ -5,13 +5,49 @@
 import type { ChannelPlugin } from "../../../src/plugin-sdk/index.js";
 import { DingTalkClient } from "./sdk.js";
 import type { DingTalkConfig } from "./types.js";
+import { dingtalkOnboardingAdapter } from "./onboarding-adapter.js";
 
-export function createDingTalkChannelPlugin(): ChannelPlugin {
+const DEFAULT_ACCOUNT_ID = "default";
+
+export type ResolvedDingTalkAccount = {
+  accountId: string;
+  enabled: boolean;
+  appKey?: string;
+  appSecret?: string;
+  config: DingTalkConfig;
+};
+
+export function createDingTalkChannelPlugin(): ChannelPlugin<ResolvedDingTalkAccount> {
   return {
     id: "dingtalk",
     meta: {
       name: "钉钉",
+      label: "钉钉",
+      selectionLabel: "钉钉",
+      docsPath: "/channels/dingtalk",
+      docsLabel: "dingtalk",
+      blurb: "连接到钉钉进行消息收发",
       order: 12,
+    },
+    onboarding: dingtalkOnboardingAdapter,
+    config: {
+      listAccountIds: () => [DEFAULT_ACCOUNT_ID],
+      resolveAccount: (cfg): ResolvedDingTalkAccount => {
+        const dingtalkConfig = (cfg.channels?.dingtalk as DingTalkConfig | undefined) || {};
+        return {
+          accountId: DEFAULT_ACCOUNT_ID,
+          enabled: cfg.channels?.dingtalk?.enabled !== false,
+          appKey: dingtalkConfig.appKey,
+          appSecret: dingtalkConfig.appSecret,
+          config: dingtalkConfig,
+        };
+      },
+      defaultAccountId: () => DEFAULT_ACCOUNT_ID,
+      isConfigured: (account) => {
+        const hasAppKey = typeof account.appKey === "string" && account.appKey.trim().length > 0;
+        const hasAppSecret = typeof account.appSecret === "string" && account.appSecret.trim().length > 0;
+        return hasAppKey && hasAppSecret;
+      },
     },
 
     async onboard(config, runtime, prompter) {

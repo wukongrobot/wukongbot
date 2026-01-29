@@ -1,7 +1,7 @@
 import { ensureAuthProfileStore, listProfilesForProvider } from "../agents/auth-profiles.js";
 import { DEFAULT_MODEL, DEFAULT_PROVIDER } from "../agents/defaults.js";
 import { getCustomProviderApiKey, resolveEnvApiKey } from "../agents/model-auth.js";
-import { loadModelCatalog } from "../agents/model-catalog.js";
+import { loadModelCatalog, type ModelCatalogEntry } from "../agents/model-catalog.js";
 import {
   buildAllowedModelSet,
   buildModelAliasIndex,
@@ -12,6 +12,11 @@ import {
 import type { MoltbotConfig } from "../config/config.js";
 import type { WizardPrompter, WizardSelectOption } from "../wizard/prompts.js";
 import { formatTokenK } from "./models/shared.js";
+import {
+  CHINA_MODEL_PRESETS,
+  getChinaModelsForProvider,
+  isChinaProvider,
+} from "../agents/china-models-preset.js";
 
 const KEEP_VALUE = "__keep__";
 const MANUAL_VALUE = "__manual__";
@@ -109,7 +114,48 @@ export async function promptDefaultModel(
   const resolvedKey = modelKey(resolved.provider, resolved.model);
   const configuredKey = configuredRaw ? resolvedKey : "";
 
-  const catalog = await loadModelCatalog({ config: cfg, useCache: false });
+  let catalog = await loadModelCatalog({ config: cfg, useCache: false });
+
+  // 补充国产模型预设到catalog
+  if (preferredProvider && isChinaProvider(preferredProvider)) {
+    // 有指定provider时，只补充该provider的预设模型
+    const presetModels = getChinaModelsForProvider(preferredProvider);
+    const existingIds = new Set(
+      catalog.filter((e) => e.provider === preferredProvider).map((e) => e.id.toLowerCase()),
+    );
+    for (const preset of presetModels) {
+      if (!existingIds.has(preset.id.toLowerCase())) {
+        catalog.push({
+          id: preset.id,
+          name: preset.name,
+          provider: preferredProvider,
+          contextWindow: preset.contextWindow,
+          reasoning: preset.reasoning,
+        });
+      }
+    }
+  } else if (!preferredProvider) {
+    // 没有指定provider时，补充所有国产厂商的预设模型
+    for (const providerPreset of CHINA_MODEL_PRESETS) {
+      const existingIds = new Set(
+        catalog
+          .filter((e) => e.provider === providerPreset.provider)
+          .map((e) => e.id.toLowerCase()),
+      );
+      for (const preset of providerPreset.models) {
+        if (!existingIds.has(preset.id.toLowerCase())) {
+          catalog.push({
+            id: preset.id,
+            name: preset.name,
+            provider: providerPreset.provider,
+            contextWindow: preset.contextWindow,
+            reasoning: preset.reasoning,
+          });
+        }
+      }
+    }
+  }
+
   if (catalog.length === 0) {
     return promptManualModel({
       prompter: params.prompter,
@@ -140,35 +186,86 @@ export async function promptDefaultModel(
     });
   }
 
-  const providers = Array.from(new Set(models.map((entry) => entry.provider))).sort((a, b) =>
-    a.localeCompare(b),
-  );
+  // 添加国产厂商到provider列表（如果还没有的话）
+  const chinaProviders = CHINA_MODEL_PRESETS.map((p) => p.provider);
+  const allProviders = Array.from(
+    new Set([...models.map((entry) => entry.provider), ...chinaProviders]),
+  ).sort((a, b) => {
+    // 国产厂商优先排序
+    const aIsChina = chinaProviders.includes(a);
+    const bIsChina = chinaProviders.includes(b);
+    if (aIsChina && !bIsChina) return -1;
+    if (!aIsChina && bIsChina) return 1;
+    return a.localeCompare(b);
+  });
 
-  const hasPreferredProvider = preferredProvider ? providers.includes(preferredProvider) : false;
+  const hasPreferredProvider = preferredProvider ? allProviders.includes(preferredProvider) : false;
   const shouldPromptProvider =
-    !hasPreferredProvider && providers.length > 1 && models.length > PROVIDER_FILTER_THRESHOLD;
+    !hasPreferredProvider && allProviders.length > 1 && models.length > PROVIDER_FILTER_THRESHOLD;
   if (shouldPromptProvider) {
     const selection = await params.prompter.select({
-      message: "Filter models by provider",
+      message: "选择模型提供商",
       options: [
-        { value: "*", label: "All providers" },
-        ...providers.map((provider) => {
+        { value: "*", label: "所有提供商" },
+        ...allProviders.map((provider) => {
           const count = models.filter((entry) => entry.provider === provider).length;
+          const presetCount = isChinaProvider(provider)
+            ? getChinaModelsForProvider(provider).length
+            : 0;
+          const totalCount = Math.max(count, presetCount);
           return {
             value: provider,
             label: provider,
-            hint: `${count} model${count === 1 ? "" : "s"}`,
+            hint: `${totalCount} 个模型`,
           };
         }),
       ],
     });
     if (selection !== "*") {
-      models = models.filter((entry) => entry.provider === selection);
+      if (isChinaProvider(selection)) {
+        // 如果选择了国产厂商，只显示该厂商的预设模型
+        const presetModels = getChinaModelsForProvider(selection);
+        const existingIds = new Set(
+          models.filter((m) => m.provider === selection).map((m) => m.id.toLowerCase()),
+        );
+        const supplemental: ModelCatalogEntry[] = presetModels
+          .filter((preset) => !existingIds.has(preset.id.toLowerCase()))
+          .map((preset) => ({
+            id: preset.id,
+            name: preset.name,
+            provider: selection,
+            contextWindow: preset.contextWindow,
+            reasoning: preset.reasoning,
+          }));
+        models = [...models.filter((entry) => entry.provider === selection), ...supplemental];
+      } else {
+        // 其他 provider：只显示该 provider 的模型
+        models = models.filter((entry) => entry.provider === selection);
+      }
     }
   }
 
   if (hasPreferredProvider && preferredProvider) {
-    models = models.filter((entry) => entry.provider === preferredProvider);
+    if (isChinaProvider(preferredProvider)) {
+      // 如果是国产厂商，只显示该厂商的预设模型
+      const presetModels = getChinaModelsForProvider(preferredProvider);
+      const existingIds = new Set(
+        models.filter((m) => m.provider === preferredProvider).map((m) => m.id.toLowerCase()),
+      );
+      const supplemental: ModelCatalogEntry[] = presetModels
+        .filter((preset) => !existingIds.has(preset.id.toLowerCase()))
+        .map((preset) => ({
+          id: preset.id,
+          name: preset.name,
+          provider: preferredProvider,
+          contextWindow: preset.contextWindow,
+          reasoning: preset.reasoning,
+        }));
+      models = [...models.filter((entry) => entry.provider === preferredProvider), ...supplemental];
+    } else {
+      // 其他 provider：只显示该 provider 的模型
+      models = models.filter((entry) => entry.provider === preferredProvider);
+    }
   }
 
   const authStore = ensureAuthProfileStore(params.agentDir, {
@@ -249,7 +346,7 @@ export async function promptDefaultModel(
   }
 
   const selection = await params.prompter.select({
-    message: params.message ?? "Default model",
+    message: params.message ?? "默认模型",
     options,
     initialValue,
   });

@@ -13,7 +13,8 @@ export type NormalizedPluginsConfig = {
   entries: Record<string, { enabled?: boolean; config?: unknown }>;
 };
 
-export const BUNDLED_ENABLED_BY_DEFAULT = new Set<string>();
+// 国产IM插件默认启用，以便在onboarding中使用
+export const BUNDLED_ENABLED_BY_DEFAULT = new Set<string>(["feishu", "dingtalk", "wecom"]);
 
 const normalizeList = (value: unknown): string[] => {
   if (!Array.isArray(value)) return [];

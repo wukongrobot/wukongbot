@@ -5,13 +5,52 @@
 import type { ChannelPlugin } from "../../../src/plugin-sdk/index.js";
 import { WeComClient } from "./sdk.js";
 import type { WeComConfig } from "./types.js";
+import { wecomOnboardingAdapter } from "./onboarding-adapter.js";
 
-export function createWeComChannelPlugin(): ChannelPlugin {
+const DEFAULT_ACCOUNT_ID = "default";
+
+export type ResolvedWeComAccount = {
+  accountId: string;
+  enabled: boolean;
+  corpId?: string;
+  agentId?: string;
+  secret?: string;
+  config: WeComConfig;
+};
+
+export function createWeComChannelPlugin(): ChannelPlugin<ResolvedWeComAccount> {
   return {
     id: "wecom",
     meta: {
       name: "企业微信",
+      label: "企业微信",
+      selectionLabel: "企业微信",
+      docsPath: "/channels/wecom",
+      docsLabel: "wecom",
+      blurb: "连接到企业微信进行消息收发",
       order: 11,
+    },
+    onboarding: wecomOnboardingAdapter,
+    config: {
+      listAccountIds: () => [DEFAULT_ACCOUNT_ID],
+      resolveAccount: (cfg): ResolvedWeComAccount => {
+        const wecomConfig = (cfg.channels?.wecom as WeComConfig | undefined) || {};
+        return {
+          accountId: DEFAULT_ACCOUNT_ID,
+          enabled: cfg.channels?.wecom?.enabled !== false,
+          corpId: wecomConfig.corpId,
+          agentId: wecomConfig.agentId,
+          secret: wecomConfig.secret,
+          config: wecomConfig,
+        };
+      },
+      defaultAccountId: () => DEFAULT_ACCOUNT_ID,
+      isConfigured: (account) => {
+        const hasCorpId = typeof account.corpId === "string" && account.corpId.trim().length > 0;
+        const hasAgentId = typeof account.agentId === "string" && account.agentId.trim().length > 0;
+        const hasSecret = typeof account.secret === "string" && account.secret.trim().length > 0;
+        return hasCorpId && hasAgentId && hasSecret;
+      },
     },
 
     async onboard(config, runtime, prompter) {

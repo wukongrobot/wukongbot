@@ -21,6 +21,7 @@ export type ApplyAuthChoiceParams = {
   agentDir?: string;
   setDefaultModel: boolean;
   agentId?: string;
+  preferredProvider?: string; // 优先的模型提供商（从 auth choice group ID 传入）
   opts?: {
     tokenProvider?: string;
     token?: string;

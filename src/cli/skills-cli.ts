@@ -282,17 +282,17 @@ export function formatSkillsCheck(report: SkillStatusReport, opts: SkillsCheckOp
   }
 
   const lines: string[] = [];
-  lines.push(theme.heading("Skills Status Check"));
+  lines.push(theme.heading("技能状态检查"));
   lines.push("");
-  lines.push(`${theme.muted("Total:")} ${report.skills.length}`);
-  lines.push(`${theme.success("✓")} ${theme.muted("Eligible:")} ${eligible.length}`);
-  lines.push(`${theme.warn("⏸")} ${theme.muted("Disabled:")} ${disabled.length}`);
-  lines.push(`${theme.warn("🚫")} ${theme.muted("Blocked by allowlist:")} ${blocked.length}`);
-  lines.push(`${theme.error("✗")} ${theme.muted("Missing requirements:")} ${missingReqs.length}`);
+  lines.push(`${theme.muted("总数:")} ${report.skills.length}`);
+  lines.push(`${theme.success("✓")} ${theme.muted("可用:")} ${eligible.length}`);
+  lines.push(`${theme.warn("⏸")} ${theme.muted("禁用:")} ${disabled.length}`);
+  lines.push(`${theme.warn("🚫")} ${theme.muted("被 allowlist 阻止:")} ${blocked.length}`);
+  lines.push(`${theme.error("✗")} ${theme.muted("缺少要求:")} ${missingReqs.length}`);
 
   if (eligible.length > 0) {
     lines.push("");
-    lines.push(theme.heading("Ready to use:"));
+    lines.push(theme.heading("可用:"));
     for (const skill of eligible) {
       const emoji = skill.emoji ?? "📦";
       lines.push(`  ${emoji} ${skill.name}`);

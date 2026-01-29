@@ -1,17 +1,16 @@
-/**
- * 飞书插件入口
- */
+import type { MoltbotPluginApi } from "clawdbot/plugin-sdk";
+import { emptyPluginConfigSchema } from "clawdbot/plugin-sdk";
 
-import type { PluginApi } from "../../src/plugin-sdk/index.js";
 import { createFeishuChannelPlugin } from "./src/channel.js";
 
-export default {
+const plugin = {
   id: "feishu",
-  register(api: PluginApi) {
-    api.registerChannel(createFeishuChannelPlugin());
+  name: "飞书",
+  description: "飞书 (Feishu/Lark) channel plugin",
+  configSchema: emptyPluginConfigSchema(),
+  register(api: MoltbotPluginApi) {
+    api.registerChannel({ plugin: createFeishuChannelPlugin() });
   },
 };
 
-// 导出类型供外部使用
-export type { FeishuConfig, FeishuMessage } from "./src/types.js";
-export { FeishuClient } from "./src/sdk.js";
+export default plugin;

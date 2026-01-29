@@ -28,7 +28,7 @@ export async function applyAuthChoiceOpenAI(
     const envKey = resolveEnvApiKey("openai");
     if (envKey) {
       const useExisting = await params.prompter.confirm({
-        message: `Use existing OPENAI_API_KEY (${envKey.source}, ${formatApiKeyPreview(envKey.apiKey)})?`,
+        message: `使用现有的 OPENAI_API_KEY (${envKey.source}, ${formatApiKeyPreview(envKey.apiKey)})?`,
         initialValue: true,
       });
       if (useExisting) {
@@ -40,8 +40,8 @@ export async function applyAuthChoiceOpenAI(
           process.env.OPENAI_API_KEY = envKey.apiKey;
         }
         await params.prompter.note(
-          `Copied OPENAI_API_KEY to ${result.path} for launchd compatibility.`,
-          "OpenAI API key",
+          `已将 OPENAI_API_KEY 复制到 ${result.path} 以兼容 launchd。`,
+          "OpenAI API 密钥",
         );
         return { config: params.config };
       }
@@ -52,7 +52,7 @@ export async function applyAuthChoiceOpenAI(
       key = params.opts.token;
     } else {
       key = await params.prompter.text({
-        message: "Enter OpenAI API key",
+        message: "输入 OpenAI API 密钥",
         validate: validateApiKeyInput,
       });
     }
@@ -64,8 +64,8 @@ export async function applyAuthChoiceOpenAI(
     });
     process.env.OPENAI_API_KEY = trimmed;
     await params.prompter.note(
-      `Saved OPENAI_API_KEY to ${result.path} for launchd compatibility.`,
-      "OpenAI API key",
+      `已将 OPENAI_API_KEY 保存到 ${result.path} 以兼容 launchd。`,
+      "OpenAI API 密钥",
     );
     return { config: params.config };
   }
@@ -76,8 +76,8 @@ export async function applyAuthChoiceOpenAI(
     const noteAgentModel = async (model: string) => {
       if (!params.agentId) return;
       await params.prompter.note(
-        `Default model set to ${model} for agent "${params.agentId}".`,
-        "Model configured",
+        `默认模型已设置为 ${model} 用于代理 "${params.agentId}"。`,
+        "模型已配置",
       );
     };
 
@@ -125,8 +125,8 @@ export async function applyAuthChoiceOpenAI(
           nextConfig = applied.next;
           if (applied.changed) {
             await params.prompter.note(
-              `Default model set to ${OPENAI_CODEX_DEFAULT_MODEL}`,
-              "Model configured",
+              `默认模型已设置为 ${OPENAI_CODEX_DEFAULT_MODEL}`,
+              "模型已配置",
             );
           }
         } else {
@@ -138,7 +138,7 @@ export async function applyAuthChoiceOpenAI(
       spin.stop("OpenAI OAuth failed");
       params.runtime.error(String(err));
       await params.prompter.note(
-        "Trouble with OAuth? See https://docs.molt.bot/start/faq",
+        "OAuth 出现问题？请参阅 https://docs.molt.bot/start/faq",
         "OAuth help",
       );
     }

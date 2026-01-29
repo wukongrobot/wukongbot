@@ -9,7 +9,7 @@ export async function promptAuthChoiceGrouped(params: {
   prompter: WizardPrompter;
   store: AuthProfileStore;
   includeSkip: boolean;
-}): Promise<AuthChoice> {
+}): Promise<AuthChoice | { authChoice: AuthChoice; groupId: string }> {
   const { groups, skipOption } = buildAuthChoiceGroups(params);
   const availableGroups = groups.filter((group) => group.options.length > 0);
 
@@ -48,6 +48,10 @@ export async function promptAuthChoiceGrouped(params: {
       continue;
     }
 
-    return methodSelection as AuthChoice;
+    // 返回 auth choice 和 group ID，这样可以更准确地确定模型提供商
+    return {
+      authChoice: methodSelection as AuthChoice,
+      groupId: group.value,
+    };
   }
 }

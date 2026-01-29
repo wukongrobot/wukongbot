@@ -254,11 +254,17 @@ export async function agentsAddCommand(
       const authStore = ensureAuthProfileStore(agentDir, {
         allowKeychainPrompt: false,
       });
-      const authChoice = await promptAuthChoiceGrouped({
+      const authChoiceResult = await promptAuthChoiceGrouped({
         prompter,
         store: authStore,
         includeSkip: true,
       });
+
+      // 提取 authChoice 和 groupId
+      const authChoice =
+        typeof authChoiceResult === "string" ? authChoiceResult : authChoiceResult.authChoice;
+      const authGroupId =
+        typeof authChoiceResult === "string" ? undefined : authChoiceResult.groupId;
 
       const authResult = await applyAuthChoice({
         authChoice,
@@ -268,6 +274,7 @@ export async function agentsAddCommand(
         agentDir,
         setDefaultModel: false,
         agentId,
+        preferredProvider: authGroupId,
       });
       nextConfig = authResult.config;
       if (authResult.agentModelOverride) {

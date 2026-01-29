@@ -1,16 +1,16 @@
-/**
- * 钉钉插件入口
- */
+import type { MoltbotPluginApi } from "clawdbot/plugin-sdk";
+import { emptyPluginConfigSchema } from "clawdbot/plugin-sdk";
 
-import type { PluginApi } from "../../src/plugin-sdk/index.js";
 import { createDingTalkChannelPlugin } from "./src/channel.js";
 
-export default {
+const plugin = {
   id: "dingtalk",
-  register(api: PluginApi) {
-    api.registerChannel(createDingTalkChannelPlugin());
+  name: "钉钉",
+  description: "钉钉 (DingTalk) channel plugin",
+  configSchema: emptyPluginConfigSchema(),
+  register(api: MoltbotPluginApi) {
+    api.registerChannel({ plugin: createDingTalkChannelPlugin() });
   },
 };
 
-export type { DingTalkConfig, DingTalkMessage } from "./src/types.js";
-export { DingTalkClient } from "./src/sdk.js";
+export default plugin;

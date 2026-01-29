@@ -41,13 +41,18 @@ export async function promptAuthConfig(
   runtime: RuntimeEnv,
   prompter: WizardPrompter,
 ): Promise<MoltbotConfig> {
-  const authChoice = await promptAuthChoiceGrouped({
+  const authChoiceResult = await promptAuthChoiceGrouped({
     prompter,
     store: ensureAuthProfileStore(undefined, {
       allowKeychainPrompt: false,
     }),
     includeSkip: true,
   });
+
+  // 提取 authChoice 和 groupId
+  const authChoice =
+    typeof authChoiceResult === "string" ? authChoiceResult : authChoiceResult.authChoice;
+  const authGroupId = typeof authChoiceResult === "string" ? undefined : authChoiceResult.groupId;
 
   let next = cfg;
   if (authChoice !== "skip") {
@@ -57,6 +62,7 @@ export async function promptAuthConfig(
       prompter,
       runtime,
       setDefaultModel: true,
+      preferredProvider: authGroupId, // 使用 group ID 作为 preferredProvider
     });
     next = applied.config;
   } else {

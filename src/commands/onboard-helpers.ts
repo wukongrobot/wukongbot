@@ -273,7 +273,7 @@ export async function moveToTrash(pathname: string, runtime: RuntimeEnv): Promis
     await runCommandWithTimeout(["trash", pathname], { timeoutMs: 5000 });
     runtime.log(`Moved to Trash: ${shortenHomePath(pathname)}`);
   } catch {
-    runtime.log(`Failed to move to Trash (manual delete): ${shortenHomePath(pathname)}`);
+    runtime.log(`移动到垃圾桶失败 (手动删除): ${shortenHomePath(pathname)}`);
   }
 }
 

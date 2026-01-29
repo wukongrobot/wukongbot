@@ -168,7 +168,7 @@ export async function noteChannelStatus(params: {
     accountOverrides: params.accountOverrides ?? {},
   });
   if (statusLines.length > 0) {
-    await params.prompter.note(statusLines.join("\n"), "Channel status");
+    await params.prompter.note(statusLines.join("\n"), "频道状态");
   }
 }
 
@@ -187,15 +187,15 @@ async function noteChannelPrimer(
   );
   await prompter.note(
     [
-      "DM security: default is pairing; unknown DMs get a pairing code.",
-      `Approve with: ${formatCliCommand("moltbot pairing approve <channel> <code>")}`,
-      'Public DMs require dmPolicy="open" + allowFrom=["*"].',
-      'Multi-user DMs: set session.dmScope="per-channel-peer" to isolate sessions.',
-      `Docs: ${formatDocsLink("/start/pairing", "start/pairing")}`,
+      "DM 安全: 默认是配对; 未知 DM 会得到一个配对码。",
+      `批准方式: ${formatCliCommand("wukongbot pairing approve <channel> <code>")}`,
+      '公共 DM 需要 dmPolicy="open" + allowFrom=["*"]。',
+      '多用户 DM: 设置 session.dmScope="per-channel-peer" 以隔离会话。',
+      `文档: ${formatDocsLink("/start/pairing", "start/pairing")}`,
       "",
       ...channelLines,
     ].join("\n"),
-    "How channels work",
+    "聊天频道工作原理",
   );
 }
 
@@ -225,7 +225,7 @@ async function maybeConfigureDmPolicies(params: {
   if (dmPolicies.length === 0) return params.cfg;
 
   const wants = await prompter.confirm({
-    message: "Configure DM access policies now? (default: pairing)",
+    message: "现在配置 DM 访问策略吗? (默认: 配对)",
     initialValue: false,
   });
   if (!wants) return params.cfg;
@@ -234,22 +234,22 @@ async function maybeConfigureDmPolicies(params: {
   const selectPolicy = async (policy: ChannelOnboardingDmPolicy) => {
     await prompter.note(
       [
-        "Default: pairing (unknown DMs get a pairing code).",
-        `Approve: ${formatCliCommand(`moltbot pairing approve ${policy.channel} <code>`)}`,
-        `Allowlist DMs: ${policy.policyKey}="allowlist" + ${policy.allowFromKey} entries.`,
-        `Public DMs: ${policy.policyKey}="open" + ${policy.allowFromKey} includes "*".`,
-        'Multi-user DMs: set session.dmScope="per-channel-peer" to isolate sessions.',
-        `Docs: ${formatDocsLink("/start/pairing", "start/pairing")}`,
+        "默认: 配对 (未知 DM 会得到一个配对码).",
+        `批准: ${formatCliCommand(`wukongbot pairing approve ${policy.channel} <code>`)}`,
+        `白名单 DM: ${policy.policyKey}="allowlist" + ${policy.allowFromKey} entries.`,
+        `公共 DM: ${policy.policyKey}="open" + ${policy.allowFromKey} includes "*".`,
+        '多用户 DM: 设置 session.dmScope="per-channel-peer" 以隔离会话.',
+        `文档: ${formatDocsLink("/start/pairing", "start/pairing")}`,
       ].join("\n"),
       `${policy.label} DM access`,
     );
     return (await prompter.select({
       message: `${policy.label} DM policy`,
       options: [
-        { value: "pairing", label: "Pairing (recommended)" },
-        { value: "allowlist", label: "Allowlist (specific users only)" },
-        { value: "open", label: "Open (public inbound DMs)" },
-        { value: "disabled", label: "Disabled (ignore DMs)" },
+        { value: "pairing", label: "配对 (推荐)" },
+        { value: "allowlist", label: "白名单 (仅特定用户)" },
+        { value: "open", label: "公共 (公共入站 DM)" },
+        { value: "disabled", label: "禁用 (忽略 DM)" },
       ],
     })) as DmPolicy;
   };
@@ -292,13 +292,13 @@ export async function setupChannels(
   const { installedPlugins, catalogEntries, statusByChannel, statusLines } =
     await collectChannelStatus({ cfg: next, options, accountOverrides });
   if (!options?.skipStatusNote && statusLines.length > 0) {
-    await prompter.note(statusLines.join("\n"), "Channel status");
+    await prompter.note(statusLines.join("\n"), "频道状态");
   }
 
   const shouldConfigure = options?.skipConfirm
     ? true
     : await prompter.confirm({
-        message: "Configure chat channels now?",
+        message: "现在配置聊天频道吗?",
         initialValue: true,
       });
   if (!shouldConfigure) return cfg;
@@ -357,8 +357,8 @@ export async function setupChannels(
   const resolveDisabledHint = (channel: ChannelChoice): string | undefined => {
     const plugin = getChannelPlugin(channel);
     if (!plugin) {
-      if (next.plugins?.entries?.[channel]?.enabled === false) return "plugin disabled";
-      if (next.plugins?.enabled === false) return "plugins disabled";
+      if (next.plugins?.entries?.[channel]?.enabled === false) return "插件禁用";
+      if (next.plugins?.enabled === false) return "插件禁用";
       return undefined;
     }
     const accountId = resolveChannelDefaultAccountId({ plugin, cfg: next });
@@ -374,7 +374,7 @@ export async function setupChannels(
     ) {
       enabled = (next.channels as Record<string, { enabled?: boolean }>)[channel]?.enabled;
     }
-    return enabled === false ? "disabled" : undefined;
+    return enabled === false ? "禁用" : undefined;
   };
 
   const buildSelectionOptions = (
@@ -388,7 +388,7 @@ export async function setupChannels(
       const disabledHint = resolveDisabledHint(entry.id);
       const hint = [status?.selectionHint, disabledHint].filter(Boolean).join(" · ") || undefined;
       return {
-        value: entry.meta.id,
+        value: entry.id,
         label: entry.meta.selectionLabel ?? entry.meta.label,
         ...(hint ? { hint } : {}),
       };
@@ -414,10 +414,19 @@ export async function setupChannels(
         metaById.set(entry.id, entry.meta);
       }
     }
-    const entries = Array.from(metaById, ([id, meta]) => ({
+    const allEntries = Array.from(metaById, ([id, meta]) => ({
       id: id as ChannelChoice,
       meta,
     }));
+
+    // 国产IM频道优先排序
+    const chinaChannels = ["feishu", "dingtalk", "wecom"];
+    const chinaEntries = allEntries.filter((entry) => chinaChannels.includes(entry.id));
+    const otherEntries = allEntries.filter((entry) => !chinaChannels.includes(entry.id));
+
+    // 🇨🇳 国产频道排在最前面
+    const entries = [...chinaEntries, ...otherEntries];
+
     return {
       entries,
       catalog,
@@ -437,10 +446,7 @@ export async function setupChannels(
     const result = enablePluginInConfig(next, channel);
     next = result.config;
     if (!result.enabled) {
-      await prompter.note(
-        `Cannot enable ${channel}: ${result.reason ?? "plugin disabled"}.`,
-        "Channel setup",
-      );
+      await prompter.note(`无法启用 ${channel}: ${result.reason ?? "插件禁用"}.`, "频道设置");
       return false;
     }
     const workspaceDir = resolveAgentWorkspaceDir(next, resolveDefaultAgentId(next));
@@ -450,7 +456,7 @@ export async function setupChannels(
       workspaceDir,
     });
     if (!getChannelPlugin(channel)) {
-      await prompter.note(`${channel} plugin not available.`, "Channel setup");
+      await prompter.note(`${channel} 插件不可用。`, "频道设置");
       return false;
     }
     await refreshStatus(channel);
@@ -460,7 +466,7 @@ export async function setupChannels(
   const configureChannel = async (channel: ChannelChoice) => {
     const adapter = getChannelOnboardingAdapter(channel);
     if (!adapter) {
-      await prompter.note(`${channel} does not support onboarding yet.`, "Channel setup");
+      await prompter.note(`${channel} 不支持 onboarding 。`, "频道设置");
       return;
     }
     const result = await adapter.configure({
@@ -502,7 +508,7 @@ export async function setupChannels(
     if (!options?.allowDisable) return;
 
     if (action === "delete" && !supportsDelete) {
-      await prompter.note(`${label} does not support deleting config entries.`, "Remove channel");
+      await prompter.note(`${label} 不支持删除配置项。`, "移除频道");
       return;
     }
 
@@ -551,26 +557,36 @@ export async function setupChannels(
   const handleChannelChoice = async (channel: ChannelChoice) => {
     const { catalogById } = getChannelEntries();
     const catalogEntry = catalogById.get(channel);
-    if (catalogEntry) {
-      const workspaceDir = resolveAgentWorkspaceDir(next, resolveDefaultAgentId(next));
-      const result = await ensureOnboardingPluginInstalled({
-        cfg: next,
-        entry: catalogEntry,
-        prompter,
-        runtime,
-        workspaceDir,
-      });
-      next = result.cfg;
-      if (!result.installed) return;
-      reloadOnboardingPluginRegistry({
-        cfg: next,
-        runtime,
-        workspaceDir,
-      });
+
+    // 首先检查 plugin 是否已经加载（bundled plugin）
+    const existingPlugin = getChannelPlugin(channel);
+    if (existingPlugin) {
+      // Plugin 已经加载，直接使用
       await refreshStatus(channel);
     } else {
-      const enabled = await ensureBundledPluginEnabled(channel);
-      if (!enabled) return;
+      // Plugin 未加载，检查是否在 catalog 中（需要安装）
+      if (catalogEntry) {
+        const workspaceDir = resolveAgentWorkspaceDir(next, resolveDefaultAgentId(next));
+        const result = await ensureOnboardingPluginInstalled({
+          cfg: next,
+          entry: catalogEntry,
+          prompter,
+          runtime,
+          workspaceDir,
+        });
+        next = result.cfg;
+        if (!result.installed) return;
+        reloadOnboardingPluginRegistry({
+          cfg: next,
+          runtime,
+          workspaceDir,
+        });
+        await refreshStatus(channel);
+      } else {
+        // 既不在 catalog 也未加载，尝试启用
+        const enabled = await ensureBundledPluginEnabled(channel);
+        if (!enabled) return;
+      }
     }
 
     const plugin = getChannelPlugin(channel);
@@ -630,6 +646,7 @@ export async function setupChannels(
   for (const entry of selectionEntries) {
     selectionNotes.set(entry.id, formatChannelSelectionLine(entry.meta, formatDocsLink));
   }
+
   const selectedLines = selection
     .map((channel) => selectionNotes.get(channel))
     .filter((line): line is string => Boolean(line));

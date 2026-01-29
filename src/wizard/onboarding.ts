@@ -1,5 +1,6 @@
 import { ensureAuthProfileStore } from "../agents/auth-profiles.js";
 import { listChannelPlugins } from "../channels/plugins/index.js";
+import { loadMoltbotPlugins } from "../plugins/loader.js";
 import {
   applyAuthChoice,
   resolvePreferredProviderForAuthChoice,
@@ -95,6 +96,23 @@ export async function runOnboardingWizard(
 
   const snapshot = await readConfigFileSnapshot();
   let baseConfig: MoltbotConfig = snapshot.valid ? snapshot.config : {};
+
+  // 启用plugins系统 (国产IM bundled plugins: feishu, dingtalk, wecom 默认启用)
+  if (baseConfig.plugins?.enabled !== true) {
+    baseConfig = {
+      ...baseConfig,
+      plugins: {
+        ...baseConfig.plugins,
+        enabled: true,
+      },
+    };
+  }
+
+  // 初始化plugin registry，以便加载bundled plugins (飞书、钉钉、企业微信等)
+  loadMoltbotPlugins({
+    config: baseConfig,
+    workspaceDir: resolveUserPath(DEFAULT_WORKSPACE),
+  });
 
   if (snapshot.exists && !snapshot.valid) {
     await prompter.note(summarizeExistingConfig(baseConfig), "配置无效");
@@ -291,23 +309,21 @@ export async function runOnboardingWizard(
     (flow === "quickstart"
       ? "local"
       : ((await prompter.select({
-          message: "What do you want to set up?",
+          message: "您想设置什么？",
           options: [
             {
               value: "local",
-              label: "Local gateway (this machine)",
-              hint: localProbe.ok
-                ? `Gateway reachable (${localUrl})`
-                : `No gateway detected (${localUrl})`,
+              label: "本地网关 (这台机器)",
+              hint: localProbe.ok ? `网关可达 (${localUrl})` : `未检测到网关 (${localUrl})`,
             },
             {
               value: "remote",
-              label: "Remote gateway (info-only)",
+              label: "远程网关 (仅信息)",
               hint: !remoteUrl
-                ? "No remote URL configured yet"
+                ? "尚未配置远程 URL"
                 : remoteProbe?.ok
-                  ? `Gateway reachable (${remoteUrl})`
-                  : `Configured but unreachable (${remoteUrl})`,
+                  ? `网关可达 (${remoteUrl})`
+                  : `已配置但不可达 (${remoteUrl})`,
             },
           ],
         })) as OnboardMode));
@@ -317,7 +333,7 @@ export async function runOnboardingWizard(
     nextConfig = applyWizardMetadata(nextConfig, { command: "onboard", mode });
     await writeConfigFile(nextConfig);
     logConfigUpdated(runtime);
-    await prompter.outro("Remote gateway configured.");
+    await prompter.outro("远程网关已配置。");
     return;
   }
 
@@ -326,7 +342,7 @@ export async function runOnboardingWizard(
     (flow === "quickstart"
       ? (baseConfig.agents?.defaults?.workspace ?? DEFAULT_WORKSPACE)
       : await prompter.text({
-          message: "Workspace directory",
+          message: "工作区目录",
           initialValue: baseConfig.agents?.defaults?.workspace ?? DEFAULT_WORKSPACE,
         }));
 
@@ -351,7 +367,7 @@ export async function runOnboardingWizard(
     allowKeychainPrompt: false,
   });
   const authChoiceFromPrompt = opts.authChoice === undefined;
-  const authChoice =
+  const authChoiceResult =
     opts.authChoice ??
     (await promptAuthChoiceGrouped({
       prompter,
@@ -359,12 +375,18 @@ export async function runOnboardingWizard(
       includeSkip: true,
     }));
 
+  // 提取 authChoice 和 groupId
+  const authChoice =
+    typeof authChoiceResult === "string" ? authChoiceResult : authChoiceResult.authChoice;
+  const authGroupId = typeof authChoiceResult === "string" ? undefined : authChoiceResult.groupId;
+
   const authResult = await applyAuthChoice({
     authChoice,
     config: nextConfig,
     prompter,
     runtime,
     setDefaultModel: true,
+    preferredProvider: authGroupId, // 传递 groupId 作为 preferredProvider
     opts: {
       tokenProvider: opts.tokenProvider,
       token: opts.authChoice === "apiKey" && opts.token ? opts.token : undefined,
@@ -372,13 +394,25 @@ export async function runOnboardingWizard(
   });
   nextConfig = authResult.config;
 
+  // 确保plugins系统保持启用状态
+  if (!nextConfig.plugins?.enabled) {
+    nextConfig = {
+      ...nextConfig,
+      plugins: {
+        ...nextConfig.plugins,
+        enabled: true,
+      },
+    };
+  }
+
   if (authChoiceFromPrompt) {
     const modelSelection = await promptDefaultModel({
       config: nextConfig,
       prompter,
       allowKeep: true,
       ignoreAllowlist: true,
-      preferredProvider: resolvePreferredProviderForAuthChoice(authChoice),
+      // 优先使用 auth group ID（如 "deepseek"），否则回退到 auth choice 映射
+      preferredProvider: authGroupId ?? resolvePreferredProviderForAuthChoice(authChoice),
     });
     if (modelSelection.model) {
       nextConfig = applyPrimaryModel(nextConfig, modelSelection.model);
@@ -400,8 +434,25 @@ export async function runOnboardingWizard(
   const settings = gateway.settings;
 
   if (opts.skipChannels ?? opts.skipProviders) {
-    await prompter.note("Skipping channel setup.", "Channels");
+    await prompter.note("跳过频道设置。", "Channels");
   } else {
+    // 再次确保plugins系统保持启用状态
+    if (!nextConfig.plugins?.enabled) {
+      nextConfig = {
+        ...nextConfig,
+        plugins: {
+          ...nextConfig.plugins,
+          enabled: true,
+        },
+      };
+    }
+
+    // 重新加载plugin registry以确保bundled plugins（飞书、钉钉、企业微信）被正确识别
+    loadMoltbotPlugins({
+      config: nextConfig,
+      workspaceDir: resolveUserPath(DEFAULT_WORKSPACE),
+    });
+
     const quickstartAllowFromChannels =
       flow === "quickstart"
         ? listChannelPlugins()
@@ -424,7 +475,7 @@ export async function runOnboardingWizard(
   });
 
   if (opts.skipSkills) {
-    await prompter.note("Skipping skills setup.", "Skills");
+    await prompter.note("跳过技能设置。", "Skills");
   } else {
     nextConfig = await setupSkills(nextConfig, workspaceDir, runtime, prompter);
   }

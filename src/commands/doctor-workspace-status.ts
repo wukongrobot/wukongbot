@@ -22,7 +22,7 @@ export function noteWorkspaceStatus(cfg: MoltbotConfig) {
       }`,
       `Blocked by allowlist: ${skillsReport.skills.filter((s) => s.blockedByAllowlist).length}`,
     ].join("\n"),
-    "Skills status",
+    "技能状态",
   );
 
   const pluginRegistry = loadMoltbotPlugins({

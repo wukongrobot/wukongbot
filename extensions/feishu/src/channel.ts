@@ -9,13 +9,49 @@ import { onboardFeishu, type Prompter } from "./onboarding.js";
 import { probeFeishu } from "./probe.js";
 import { sendMessage, type OutboundMessage } from "./outbound.js";
 import { startMonitor } from "./monitor.js";
+import { feishuOnboardingAdapter } from "./onboarding-adapter.js";
 
-export function createFeishuChannelPlugin(): ChannelPlugin {
+const DEFAULT_ACCOUNT_ID = "default";
+
+export type ResolvedFeishuAccount = {
+  accountId: string;
+  enabled: boolean;
+  appId?: string;
+  appSecret?: string;
+  config: FeishuConfig;
+};
+
+export function createFeishuChannelPlugin(): ChannelPlugin<ResolvedFeishuAccount> {
   return {
     id: "feishu",
     meta: {
       name: "飞书",
+      label: "飞书",
+      selectionLabel: "飞书",
+      docsPath: "/channels/feishu",
+      docsLabel: "feishu",
+      blurb: "连接到飞书进行消息收发",
       order: 10,
+    },
+    onboarding: feishuOnboardingAdapter,
+    config: {
+      listAccountIds: () => [DEFAULT_ACCOUNT_ID],
+      resolveAccount: (cfg): ResolvedFeishuAccount => {
+        const feishuConfig = (cfg.channels?.feishu as FeishuConfig | undefined) || {};
+        return {
+          accountId: DEFAULT_ACCOUNT_ID,
+          enabled: cfg.channels?.feishu?.enabled !== false,
+          appId: feishuConfig.appId,
+          appSecret: feishuConfig.appSecret,
+          config: feishuConfig,
+        };
+      },
+      defaultAccountId: () => DEFAULT_ACCOUNT_ID,
+      isConfigured: (account) => {
+        const hasAppId = typeof account.appId === "string" && account.appId.trim().length > 0;
+        const hasAppSecret = typeof account.appSecret === "string" && account.appSecret.trim().length > 0;
+        return hasAppId && hasAppSecret;
+      },
     },
 
     /**
