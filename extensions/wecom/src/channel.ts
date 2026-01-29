@@ -31,6 +31,13 @@ export function createWeComChannelPlugin(): ChannelPlugin<ResolvedWeComAccount> 
       order: 11,
     },
     onboarding: wecomOnboardingAdapter,
+    capabilities: {
+      chatTypes: ["direct", "group"],
+      text: true,
+      media: true,
+      nativeCommands: false,
+      blockStreaming: true,
+    },
     config: {
       listAccountIds: () => [DEFAULT_ACCOUNT_ID],
       resolveAccount: (cfg): ResolvedWeComAccount => {

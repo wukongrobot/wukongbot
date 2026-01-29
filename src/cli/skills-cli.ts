@@ -92,7 +92,7 @@ export function formatSkillsList(report: SkillStatusReport, opts: SkillsListOpti
 
   if (skills.length === 0) {
     const message = opts.eligible
-      ? `No eligible skills found. Run \`${formatCliCommand("moltbot skills list")}\` to see all skills.`
+      ? `No eligible skills found. Run \`${formatCliCommand("wukongbot skills list")}\` to see all skills.`
       : "No skills found.";
     return appendClawdHubHint(message, opts.json);
   }
@@ -150,7 +150,7 @@ export function formatSkillInfo(
       return JSON.stringify({ error: "not found", skill: skillName }, null, 2);
     }
     return appendClawdHubHint(
-      `Skill "${skillName}" not found. Run \`${formatCliCommand("moltbot skills list")}\` to see available skills.`,
+      `Skill "${skillName}" not found. Run \`${formatCliCommand("wukongbot skills list")}\` to see available skills.`,
       opts.json,
     );
   }
@@ -162,12 +162,12 @@ export function formatSkillInfo(
   const lines: string[] = [];
   const emoji = skill.emoji ?? "📦";
   const status = skill.eligible
-    ? theme.success("✓ Ready")
+    ? theme.success("✓ 可用")
     : skill.disabled
-      ? theme.warn("⏸ Disabled")
+      ? theme.warn("⏸ 禁用")
       : skill.blockedByAllowlist
-        ? theme.warn("🚫 Blocked by allowlist")
-        : theme.error("✗ Missing requirements");
+        ? theme.warn("🚫 被 allowlist 阻止")
+        : theme.error("✗ 缺少要求");
 
   lines.push(`${emoji} ${theme.heading(skill.name)} ${status}`);
   lines.push("");
@@ -301,7 +301,7 @@ export function formatSkillsCheck(report: SkillStatusReport, opts: SkillsCheckOp
 
   if (missingReqs.length > 0) {
     lines.push("");
-    lines.push(theme.heading("Missing requirements:"));
+    lines.push(theme.heading("缺少要求:"));
     for (const skill of missingReqs) {
       const emoji = skill.emoji ?? "📦";
       const missing: string[] = [];

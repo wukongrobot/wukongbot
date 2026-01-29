@@ -134,8 +134,14 @@ export async function resolveApiKeyForProvider(params: {
   store?: AuthProfileStore;
   agentDir?: string;
 }): Promise<ResolvedProviderAuth> {
-  const { provider, cfg, profileId, preferredProfile } = params;
+  const { cfg, profileId, preferredProfile } = params;
   const store = params.store ?? ensureAuthProfileStore(params.agentDir);
+
+  // OpenAI 兼容的中国提供商使用 "openai" 认证
+  const openaiCompatibleProviders = ["deepseek", "siliconflow", "doubao"];
+  const provider = openaiCompatibleProviders.includes(params.provider.toLowerCase())
+    ? "openai"
+    : params.provider;
 
   if (profileId) {
     const resolved = await resolveApiKeyForProfile({
@@ -219,9 +225,9 @@ export async function resolveApiKeyForProvider(params: {
   const resolvedAgentDir = path.dirname(authStorePath);
   throw new Error(
     [
-      `No API key found for provider "${provider}".`,
+      `没有找到 API key 用于提供者 "${provider}".`,
       `Auth store: ${authStorePath} (agentDir: ${resolvedAgentDir}).`,
-      `Configure auth for this agent (${formatCliCommand("moltbot agents add <id>")}) or copy auth-profiles.json from the main agentDir.`,
+      `配置此 agent 的认证 (${formatCliCommand("wukongbot agents add <id>")}) 或从主 agentDir 复制 auth-profiles.json。`,
     ].join(" "),
   );
 }
@@ -299,11 +305,17 @@ export function resolveModelAuthMode(
   const resolved = provider?.trim();
   if (!resolved) return undefined;
 
-  const authOverride = resolveProviderAuthOverride(cfg, resolved);
+  // OpenAI 兼容的中国提供商使用 "openai" 认证
+  const openaiCompatibleProviders = ["deepseek", "siliconflow", "doubao"];
+  const authProvider = openaiCompatibleProviders.includes(resolved.toLowerCase())
+    ? "openai"
+    : resolved;
+
+  const authOverride = resolveProviderAuthOverride(cfg, authProvider);
   if (authOverride === "aws-sdk") return "aws-sdk";
 
   const authStore = store ?? ensureAuthProfileStore();
-  const profiles = listProfilesForProvider(authStore, resolved);
+  const profiles = listProfilesForProvider(authStore, authProvider);
   if (profiles.length > 0) {
     const modes = new Set(
       profiles
@@ -319,16 +331,16 @@ export function resolveModelAuthMode(
     if (modes.has("api_key")) return "api-key";
   }
 
-  if (authOverride === undefined && normalizeProviderId(resolved) === "amazon-bedrock") {
+  if (authOverride === undefined && normalizeProviderId(authProvider) === "amazon-bedrock") {
     return "aws-sdk";
   }
 
-  const envKey = resolveEnvApiKey(resolved);
+  const envKey = resolveEnvApiKey(authProvider);
   if (envKey?.apiKey) {
     return envKey.source.includes("OAUTH_TOKEN") ? "oauth" : "api-key";
   }
 
-  if (getCustomProviderApiKey(cfg, resolved)) return "api-key";
+  if (getCustomProviderApiKey(cfg, authProvider)) return "api-key";
 
   return "unknown";
 }

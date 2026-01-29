@@ -12,12 +12,12 @@ export async function setupInternalHooks(
 ): Promise<MoltbotConfig> {
   await prompter.note(
     [
-      "Hooks let you automate actions when agent commands are issued.",
-      "Example: Save session context to memory when you issue /new.",
+      "钩子让你在 agent 命令被发出时自动执行操作。",
+      "例子: 当你发出 /new 时保存会话上下文到记忆。",
       "",
-      "Learn more: https://docs.molt.bot/hooks",
+      "了解更多: https://docs.wukongbot.com/hooks",
     ].join("\n"),
-    "Hooks",
+    "钩子介绍",
   );
 
   // Discover available hooks using the hook discovery system
@@ -28,17 +28,14 @@ export async function setupInternalHooks(
   const eligibleHooks = report.hooks.filter((h) => h.eligible);
 
   if (eligibleHooks.length === 0) {
-    await prompter.note(
-      "No eligible hooks found. You can configure hooks later in your config.",
-      "No Hooks Available",
-    );
+    await prompter.note("没有可用的钩子。你可以在配置中稍后配置钩子。", "没有可用的钩子");
     return cfg;
   }
 
   const toEnable = await prompter.multiselect({
-    message: "Enable hooks?",
+    message: "启用钩子?",
     options: [
-      { value: "__skip__", label: "Skip for now" },
+      { value: "__skip__", label: "现在跳过" },
       ...eligibleHooks.map((hook) => ({
         value: hook.name,
         label: `${hook.emoji ?? "🔗"} ${hook.name}`,
@@ -71,14 +68,14 @@ export async function setupInternalHooks(
 
   await prompter.note(
     [
-      `Enabled ${selected.length} hook${selected.length > 1 ? "s" : ""}: ${selected.join(", ")}`,
+      `已启用 ${selected.length} 个钩子: ${selected.join(", ")}`,
       "",
-      "You can manage hooks later with:",
-      `  ${formatCliCommand("moltbot hooks list")}`,
-      `  ${formatCliCommand("moltbot hooks enable <name>")}`,
-      `  ${formatCliCommand("moltbot hooks disable <name>")}`,
+      "你可以稍后使用:",
+      `  ${formatCliCommand("wukongbot hooks list")}`,
+      `  ${formatCliCommand("wukongbot hooks enable <name>")}`,
+      `  ${formatCliCommand("wukongbot hooks disable <name>")}`,
     ].join("\n"),
-    "Hooks Configured",
+    "钩子配置完成",
   );
 
   return next;

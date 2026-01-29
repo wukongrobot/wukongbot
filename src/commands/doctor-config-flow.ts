@@ -108,13 +108,13 @@ function noteOpencodeProviderOverrides(cfg: MoltbotConfig) {
         ? providerEntry.api
         : undefined;
     return [
-      `- models.providers.${id} is set; this overrides the built-in OpenCode Zen catalog.`,
+      `- models.providers.${id} 已设置; 这覆盖了内置的 OpenCode Zen 目录。`,
       api ? `- models.providers.${id}.api=${api}` : null,
     ].filter((line): line is string => Boolean(line));
   });
 
   lines.push(
-    "- Remove these entries to restore per-model API routing + costs (then re-run onboarding if needed).",
+    "- 删除这些条目以恢复每个模型的 API 路由 + 成本 (然后重新运行 onboarding 如果需要的话)。",
   );
 
   note(lines.join("\n"), "OpenCode Zen");
@@ -146,10 +146,10 @@ export async function loadAndMaybeMigrateDoctorConfig(params: {
   const shouldRepair = params.options.repair === true || params.options.yes === true;
   const stateDirResult = await autoMigrateLegacyStateDir({ env: process.env });
   if (stateDirResult.changes.length > 0) {
-    note(stateDirResult.changes.map((entry) => `- ${entry}`).join("\n"), "Doctor changes");
+    note(stateDirResult.changes.map((entry) => `- ${entry}`).join("\n"), "检测变化");
   }
   if (stateDirResult.warnings.length > 0) {
-    note(stateDirResult.warnings.map((entry) => `- ${entry}`).join("\n"), "Doctor warnings");
+    note(stateDirResult.warnings.map((entry) => `- ${entry}`).join("\n"), "配置警告");
   }
 
   let snapshot = await readConfigFileSnapshot();
@@ -159,7 +159,7 @@ export async function loadAndMaybeMigrateDoctorConfig(params: {
       const canonicalPath = path.join(path.dirname(snapshot.path), "moltbot.json");
       if (!fs.existsSync(canonicalPath)) {
         moveLegacyConfigFile(snapshot.path, canonicalPath);
-        note(`- Config: ${snapshot.path} → ${canonicalPath}`, "Doctor changes");
+        note(`- Config: ${snapshot.path} → ${canonicalPath}`, "检测变化");
         snapshot = await readConfigFileSnapshot();
       }
     }
@@ -171,22 +171,22 @@ export async function loadAndMaybeMigrateDoctorConfig(params: {
   let shouldWriteConfig = false;
   const fixHints: string[] = [];
   if (snapshot.exists && !snapshot.valid && snapshot.legacyIssues.length === 0) {
-    note("Config invalid; doctor will run with best-effort config.", "Config");
+    note("配置无效; doctor 将使用最佳配置运行。", "配置");
   }
   const warnings = snapshot.warnings ?? [];
   if (warnings.length > 0) {
     const lines = warnings.map((issue) => `- ${issue.path}: ${issue.message}`).join("\n");
-    note(lines, "Config warnings");
+    note(lines, "配置警告");
   }
 
   if (snapshot.legacyIssues.length > 0) {
     note(
       snapshot.legacyIssues.map((issue) => `- ${issue.path}: ${issue.message}`).join("\n"),
-      "Legacy config keys detected",
+      "检测到旧版配置键",
     );
     const { config: migrated, changes } = migrateLegacyConfig(snapshot.parsed);
     if (changes.length > 0) {
-      note(changes.join("\n"), "Doctor changes");
+      note(changes.join("\n"), "检测变化");
     }
     if (migrated) {
       candidate = migrated;
@@ -196,33 +196,31 @@ export async function loadAndMaybeMigrateDoctorConfig(params: {
       // Legacy migration (2026-01-02, commit: 16420e5b) — normalize per-provider allowlists; move WhatsApp gating into channels.whatsapp.allowFrom.
       if (migrated) cfg = migrated;
     } else {
-      fixHints.push(
-        `Run "${formatCliCommand("moltbot doctor --fix")}" to apply legacy migrations.`,
-      );
+      fixHints.push(`运行 "${formatCliCommand("wukongbot doctor --fix")}" 应用旧版迁移。`);
     }
   }
 
   const normalized = normalizeLegacyConfigValues(candidate);
   if (normalized.changes.length > 0) {
-    note(normalized.changes.join("\n"), "Doctor changes");
+    note(normalized.changes.join("\n"), "检测变化");
     candidate = normalized.config;
     pendingChanges = true;
     if (shouldRepair) {
       cfg = normalized.config;
     } else {
-      fixHints.push(`Run "${formatCliCommand("moltbot doctor --fix")}" to apply these changes.`);
+      fixHints.push(`运行 "${formatCliCommand("wukongbot doctor --fix")}" 应用这些变化。`);
     }
   }
 
   const autoEnable = applyPluginAutoEnable({ config: candidate, env: process.env });
   if (autoEnable.changes.length > 0) {
-    note(autoEnable.changes.join("\n"), "Doctor changes");
+    note(autoEnable.changes.join("\n"), "检测变化");
     candidate = autoEnable.config;
     pendingChanges = true;
     if (shouldRepair) {
       cfg = autoEnable.config;
     } else {
-      fixHints.push(`Run "${formatCliCommand("moltbot doctor --fix")}" to apply these changes.`);
+      fixHints.push(`运行 "${formatCliCommand("wukongbot doctor --fix")}" 应用这些变化。`);
     }
   }
 
@@ -233,23 +231,23 @@ export async function loadAndMaybeMigrateDoctorConfig(params: {
     pendingChanges = true;
     if (shouldRepair) {
       cfg = unknown.config;
-      note(lines, "Doctor changes");
+      note(lines, "检测变化");
     } else {
-      note(lines, "Unknown config keys");
-      fixHints.push('Run "moltbot doctor --fix" to remove these keys.');
+      note(lines, "未知配置键");
+      fixHints.push('运行 "wukongbot doctor --fix" 删除这些键。');
     }
   }
 
   if (!shouldRepair && pendingChanges) {
     const shouldApply = await params.confirm({
-      message: "Apply recommended config repairs now?",
+      message: "现在应用推荐的配置修复吗?",
       initialValue: true,
     });
     if (shouldApply) {
       cfg = candidate;
       shouldWriteConfig = true;
     } else if (fixHints.length > 0) {
-      note(fixHints.join("\n"), "Doctor");
+      note(fixHints.join("\n"), "检测");
     }
   }
 

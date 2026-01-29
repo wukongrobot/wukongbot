@@ -16,7 +16,7 @@ export async function requireValidConfig(
         ? snapshot.issues.map((issue) => `- ${issue.path}: ${issue.message}`).join("\n")
         : "Unknown validation issue.";
     runtime.error(`Config invalid:\n${issues}`);
-    runtime.error(`Fix the config or run ${formatCliCommand("moltbot doctor")}.`);
+    runtime.error(`Fix the config or run ${formatCliCommand("wukongbot doctor")}.`);
     runtime.exit(1);
     return null;
   }

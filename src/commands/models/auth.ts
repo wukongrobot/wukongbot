@@ -332,7 +332,7 @@ export async function modelsAuthLoginCommand(opts: LoginOptions, runtime: Runtim
   const providers = resolvePluginProviders({ config, workspaceDir });
   if (providers.length === 0) {
     throw new Error(
-      `No provider plugins found. Install one via \`${formatCliCommand("moltbot plugins install")}\`.`,
+      `No provider plugins found. Install one via \`${formatCliCommand("wukongbot plugins install")}\`.`,
     );
   }
 

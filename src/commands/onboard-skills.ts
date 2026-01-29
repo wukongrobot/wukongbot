@@ -60,9 +60,9 @@ export async function setupSkills(
 
   await prompter.note(
     [
-      `Eligible: ${eligible.length}`,
-      `Missing requirements: ${missing.length}`,
-      `Blocked by allowlist: ${blocked.length}`,
+      `可用: ${eligible.length}`,
+      `缺少要求: ${missing.length}`,
+      `被 allowlist 阻止: ${blocked.length}`,
     ].join("\n"),
     "技能状态",
   );
@@ -78,7 +78,7 @@ export async function setupSkills(
       ["许多技能依赖是通过 Homebrew 分发的。", "没有 brew, 你需要手动构建或下载发布版本。"].join(
         "\n",
       ),
-      "Homebrew recommended",
+      "Homebrew 推荐",
     );
     const showBrewInstall = await prompter.confirm({
       message: "显示 Homebrew 安装命令?",

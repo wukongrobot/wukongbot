@@ -141,8 +141,8 @@ export function formatHooksList(report: HookStatusReport, opts: HooksListOptions
 
   if (hooks.length === 0) {
     const message = opts.eligible
-      ? `No eligible hooks found. Run \`${formatCliCommand("moltbot hooks list")}\` to see all hooks.`
-      : "No hooks found.";
+      ? `没有可用的钩子。运行 \`${formatCliCommand("wukongbot hooks list")}\` 查看所有钩子。`
+      : "没有钩子。";
     return message;
   }
 
@@ -197,7 +197,7 @@ export function formatHookInfo(
     if (opts.json) {
       return JSON.stringify({ error: "not found", hook: hookName }, null, 2);
     }
-    return `Hook "${hookName}" not found. Run \`${formatCliCommand("moltbot hooks list")}\` to see available hooks.`;
+    return `Hook "${hookName}" not found. Run \`${formatCliCommand("wukongbot hooks list")}\` to see available hooks.`;
   }
 
   if (opts.json) {
@@ -207,10 +207,10 @@ export function formatHookInfo(
   const lines: string[] = [];
   const emoji = hook.emoji ?? "🔗";
   const status = hook.eligible
-    ? theme.success("✓ Ready")
+    ? theme.success("✓ 可用")
     : hook.disabled
-      ? theme.warn("⏸ Disabled")
-      : theme.error("✗ Missing requirements");
+      ? theme.warn("⏸ 禁用")
+      : theme.error("✗ 缺少要求");
 
   lines.push(`${emoji} ${theme.heading(hook.name)} ${status}`);
   lines.push("");

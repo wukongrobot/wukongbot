@@ -38,6 +38,6 @@ export function formatAuthDoctorHint(params: {
     }`,
     `- auth store oauth profiles: ${storeOauthProfiles || "(none)"}`,
     `- suggested profile: ${suggested}`,
-    `Fix: run "${formatCliCommand("moltbot doctor --yes")}"`,
+    `Fix: run "${formatCliCommand("wukongbot doctor --yes")}"`,
   ].join("\n");
 }

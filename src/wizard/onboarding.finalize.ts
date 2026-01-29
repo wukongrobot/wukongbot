@@ -307,7 +307,7 @@ export async function finalizeOnboardingWizard(options: FinalizeOnboardingOption
         "Gateway token: shared auth for the Gateway + Control UI.",
         "Stored in: ~/.clawdbot/moltbot.json (gateway.auth.token) or CLAWDBOT_GATEWAY_TOKEN.",
         "Web UI stores a copy in this browser's localStorage (moltbot.control.settings.v1).",
-        `Get the tokenized link anytime: ${formatCliCommand("moltbot dashboard --no-open")}`,
+        `Get the tokenized link anytime: ${formatCliCommand("wukongbot dashboard --no-open")}`,
       ].join("\n"),
       "Token",
     );
@@ -374,7 +374,7 @@ export async function finalizeOnboardingWizard(options: FinalizeOnboardingOption
       );
     } else {
       await prompter.note(
-        `When you're ready: ${formatCliCommand("moltbot dashboard --no-open")}`,
+        `When you're ready: ${formatCliCommand("wukongbot dashboard --no-open")}`,
         "Later",
       );
     }
@@ -451,7 +451,7 @@ export async function finalizeOnboardingWizard(options: FinalizeOnboardingOption
           "Moltbot uses Brave Search for the `web_search` tool. Without a Brave Search API key, web search won’t work.",
           "",
           "Set it up interactively:",
-          `- Run: ${formatCliCommand("moltbot configure --section web")}`,
+          `- Run: ${formatCliCommand("wukongbot configure --section web")}`,
           "- Enable web_search and paste your Brave Search API key",
           "",
           "Alternative: set BRAVE_API_KEY in the Gateway environment (no config changes).",

@@ -9,18 +9,18 @@ export function noteWorkspaceStatus(cfg: MoltbotConfig) {
   const workspaceDir = resolveAgentWorkspaceDir(cfg, resolveDefaultAgentId(cfg));
   const legacyWorkspace = detectLegacyWorkspaceDirs({ workspaceDir });
   if (legacyWorkspace.legacyDirs.length > 0) {
-    note(formatLegacyWorkspaceWarning(legacyWorkspace), "Extra workspace");
+    note(formatLegacyWorkspaceWarning(legacyWorkspace), "额外工作区");
   }
 
   const skillsReport = buildWorkspaceSkillStatus(workspaceDir, { config: cfg });
   note(
     [
-      `Eligible: ${skillsReport.skills.filter((s) => s.eligible).length}`,
-      `Missing requirements: ${
+      `可用: ${skillsReport.skills.filter((s) => s.eligible).length}`,
+      `缺少要求: ${
         skillsReport.skills.filter((s) => !s.eligible && !s.disabled && !s.blockedByAllowlist)
           .length
       }`,
-      `Blocked by allowlist: ${skillsReport.skills.filter((s) => s.blockedByAllowlist).length}`,
+      `被 allowlist 阻止: ${skillsReport.skills.filter((s) => s.blockedByAllowlist).length}`,
     ].join("\n"),
     "技能状态",
   );
@@ -41,9 +41,9 @@ export function noteWorkspaceStatus(cfg: MoltbotConfig) {
     const errored = pluginRegistry.plugins.filter((p) => p.status === "error");
 
     const lines = [
-      `Loaded: ${loaded.length}`,
-      `Disabled: ${disabled.length}`,
-      `Errors: ${errored.length}`,
+      `加载: ${loaded.length}`,
+      `禁用: ${disabled.length}`,
+      `错误: ${errored.length}`,
       errored.length > 0
         ? `- ${errored
             .slice(0, 10)
@@ -52,7 +52,7 @@ export function noteWorkspaceStatus(cfg: MoltbotConfig) {
         : null,
     ].filter((line): line is string => Boolean(line));
 
-    note(lines.join("\n"), "Plugins");
+    note(lines.join("\n"), "插件");
   }
   if (pluginRegistry.diagnostics.length > 0) {
     const lines = pluginRegistry.diagnostics.map((diag) => {
@@ -61,7 +61,7 @@ export function noteWorkspaceStatus(cfg: MoltbotConfig) {
       const source = diag.source ? ` (${diag.source})` : "";
       return `- ${prefix}${plugin}: ${diag.message}${source}`;
     });
-    note(lines.join("\n"), "Plugin diagnostics");
+    note(lines.join("\n"), "插件诊断");
   }
 
   return { workspaceDir };

@@ -169,7 +169,7 @@ export async function runNodeDaemonInstall(opts: NodeDaemonInstallOptions) {
     });
     if (!json) {
       defaultRuntime.log(`Node service already ${service.loadedText}.`);
-      defaultRuntime.log(`Reinstall with: ${formatCliCommand("moltbot node install --force")}`);
+      defaultRuntime.log(`Reinstall with: ${formatCliCommand("wukongbot node install --force")}`);
     }
     return;
   }

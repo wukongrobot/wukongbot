@@ -21,7 +21,7 @@ export function buildPortHints(listeners: PortListener[], port: number): string[
   const hints: string[] = [];
   if (kinds.has("gateway")) {
     hints.push(
-      `Gateway already running locally. Stop it (${formatCliCommand("moltbot gateway stop")}) or use a different port.`,
+      `Gateway already running locally. Stop it (${formatCliCommand("wukongbot gateway stop")}) or use a different port.`,
     );
   }
   if (kinds.has("ssh")) {

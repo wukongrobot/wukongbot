@@ -4,6 +4,7 @@
 
 import * as lark from "@larksuiteoapi/node-sdk";
 import type { FeishuConfig, FeishuSendMessageParams, FeishuUploadResult } from "./types.js";
+import { createFeishuClient } from "./client.js";
 
 export class FeishuClient {
   private client: lark.Client;
@@ -11,12 +12,8 @@ export class FeishuClient {
 
   constructor(config: FeishuConfig) {
     this.config = config;
-    this.client = new lark.Client({
-      appId: config.appId,
-      appSecret: config.appSecret,
-      appType: lark.AppType.SelfBuild,
-      domain: lark.Domain.Feishu,
-    });
+    // 使用统一的客户端创建函数，支持缓存
+    this.client = createFeishuClient(config);
   }
 
   /**
@@ -38,26 +35,50 @@ export class FeishuClient {
         },
       });
 
-      if (!response.success) {
-        throw new Error(`Failed to send message: ${response.msg}`);
+      // 飞书 SDK 的 success 字段可能是布尔值或其他类型
+      // 检查 code 字段（0 表示成功）
+      const code = (response as any).code ?? response.code;
+      const success = response.success === true || code === 0;
+      
+      console.log(`[feishu-sdk] Response:`, JSON.stringify(response).substring(0, 300));
+      
+      if (!success) {
+        const msg = response.msg || (response as any).message || "Unknown error";
+        throw new Error(`Failed to send message: ${msg} (code: ${code})`);
       }
 
-      return {
-        messageId: response.data?.message_id || "",
-      };
+      const messageId = response.data?.message_id || (response as any).data?.message_id || "";
+      return { messageId };
     } catch (error) {
+      if (error instanceof Error && error.message.startsWith("Failed to send message")) {
+        throw error;
+      }
       throw new Error(`Feishu send message error: ${error}`);
     }
   }
 
   /**
-   * 发送文本消息
+   * 发送文本消息（支持 Markdown）
    */
   async sendText(params: {
     chatId: string;
     text: string;
     replyTo?: string;
+    markdown?: boolean;
   }): Promise<{ messageId: string }> {
+    // 如果明确指定使用 markdown，或文本包含 markdown 标记，使用 post 类型
+    const hasMarkdown = params.markdown || this.hasMarkdownSyntax(params.text);
+    
+    if (hasMarkdown) {
+      console.log("[feishu-sdk] Using Markdown format for message");
+      return this.sendMarkdown({
+        chatId: params.chatId,
+        text: params.text,
+        replyTo: params.replyTo,
+      });
+    }
+    
+    console.log("[feishu-sdk] Using plain text format for message");
     return this.sendMessage({
       receiveId: params.chatId,
       receiveIdType: "chat_id",
@@ -65,6 +86,56 @@ export class FeishuClient {
       content: JSON.stringify({ text: params.text }),
       replyTo: params.replyTo,
     });
+  }
+
+  /**
+   * 发送 Markdown 消息（使用 interactive 卡片）
+   */
+  async sendMarkdown(params: {
+    chatId: string;
+    text: string;
+    replyTo?: string;
+  }): Promise<{ messageId: string }> {
+    // 使用飞书的 Markdown 卡片
+    const card = {
+      config: {
+        wide_screen_mode: true,
+      },
+      elements: [
+        {
+          tag: "markdown",
+          content: params.text,
+        },
+      ],
+    };
+    
+    return this.sendMessage({
+      receiveId: params.chatId,
+      receiveIdType: "chat_id",
+      msgType: "interactive",
+      content: JSON.stringify(card),
+      replyTo: params.replyTo,
+    });
+  }
+
+  /**
+   * 检测文本是否包含 Markdown 语法
+   */
+  private hasMarkdownSyntax(text: string): boolean {
+    // 检测常见的 Markdown 标记
+    const markdownPatterns = [
+      /```[\s\S]*?```/,        // 代码块
+      /`[^`]+`/,                // 行内代码
+      /^#{1,6}\s/m,             // 标题
+      /\*\*[^*]+\*\*/,          // 粗体
+      /\*[^*]+\*/,              // 斜体
+      /\[.+?\]\(.+?\)/,         // 链接
+      /^[-*+]\s/m,              // 无序列表
+      /^\d+\.\s/m,              // 有序列表
+      /^>\s/m,                  // 引用
+    ];
+    
+    return markdownPatterns.some((pattern) => pattern.test(text));
   }
 
   /**

@@ -57,21 +57,21 @@ export async function setupCommand(
   if (!existingRaw.exists || defaults.workspace !== workspace) {
     await writeConfigFile(next);
     if (!existingRaw.exists) {
-      runtime.log(`Wrote ${formatConfigPath(configPath)}`);
+      runtime.log(`写入 ${formatConfigPath(configPath)}`);
     } else {
       logConfigUpdated(runtime, { path: configPath, suffix: "(set agents.defaults.workspace)" });
     }
   } else {
-    runtime.log(`Config OK: ${formatConfigPath(configPath)}`);
+    runtime.log(`配置 OK: ${formatConfigPath(configPath)}`);
   }
 
   const ws = await ensureAgentWorkspace({
     dir: workspace,
     ensureBootstrapFiles: !next.agents?.defaults?.skipBootstrap,
   });
-  runtime.log(`Workspace OK: ${shortenHomePath(ws.dir)}`);
+  runtime.log(`工作区 OK: ${shortenHomePath(ws.dir)}`);
 
   const sessionsDir = resolveSessionTranscriptsDir();
   await fs.mkdir(sessionsDir, { recursive: true });
-  runtime.log(`Sessions OK: ${shortenHomePath(sessionsDir)}`);
+  runtime.log(`会话 OK: ${shortenHomePath(sessionsDir)}`);
 }

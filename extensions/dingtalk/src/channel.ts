@@ -30,6 +30,13 @@ export function createDingTalkChannelPlugin(): ChannelPlugin<ResolvedDingTalkAcc
       order: 12,
     },
     onboarding: dingtalkOnboardingAdapter,
+    capabilities: {
+      chatTypes: ["direct", "group"],
+      text: true,
+      media: true,
+      nativeCommands: false,
+      blockStreaming: true,
+    },
     config: {
       listAccountIds: () => [DEFAULT_ACCOUNT_ID],
       resolveAccount: (cfg): ResolvedDingTalkAccount => {

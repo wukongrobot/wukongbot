@@ -2,18 +2,23 @@
  * 飞书集成类型定义
  */
 
+/** 飞书域名类型 */
+export type FeishuDomain = "feishu" | "lark";
+
 export type FeishuConfig = {
   /** 飞书应用 App ID */
   appId: string;
   /** 飞书应用 App Secret */
   appSecret: string;
+  /** 域名类型 (飞书/Lark) */
+  domain?: FeishuDomain;
   /** 加密密钥 (可选,用于消息加密) */
   encryptKey?: string;
   /** 验证 Token (可选,用于事件订阅验证) */
   verificationToken?: string;
-  /** Webhook 监听端口 */
+  /** Webhook 监听端口 (Webhook 模式使用) */
   webhookPort?: number;
-  /** Webhook 路径 */
+  /** Webhook 路径 (Webhook 模式使用) */
   webhookPath?: string;
   /** 允许交互的用户列表 (为 "*" 则允许所有用户) */
   allowFrom?: string[];
