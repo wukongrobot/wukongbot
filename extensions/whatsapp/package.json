@@ -1,6 +1,6 @@
 {
   "name": "@moltbot/whatsapp",
-  "version": "2026.1.27-beta.1",
+  "version": "1.0.0",
   "type": "module",
   "description": "Moltbot WhatsApp channel plugin",
   "moltbot": {

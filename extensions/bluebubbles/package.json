@@ -1,6 +1,6 @@
 {
   "name": "@moltbot/bluebubbles",
-  "version": "2026.1.27-beta.1",
+  "version": "1.0.0",
   "type": "module",
   "description": "Moltbot BlueBubbles channel plugin",
   "moltbot": {

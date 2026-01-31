@@ -178,7 +178,7 @@ describe("runOnboardingWizard", () => {
     await fs.writeFile(path.join(workspaceDir, DEFAULT_BOOTSTRAP_FILENAME), "{}");
 
     const select: WizardPrompter["select"] = vi.fn(async (opts) => {
-      if (opts.message === "How do you want to hatch your bot?") return "tui";
+      if (opts.message === "你想如何孵化你的机器人？") return "tui";
       return "quickstart";
     });
 
@@ -220,7 +220,7 @@ describe("runOnboardingWizard", () => {
     expect(runTui).toHaveBeenCalledWith(
       expect.objectContaining({
         deliver: false,
-        message: "Wake up, my friend!",
+        message: "醒来吧，我的朋友！",
       }),
     );
 
@@ -233,7 +233,7 @@ describe("runOnboardingWizard", () => {
     const workspaceDir = await fs.mkdtemp(path.join(os.tmpdir(), "moltbot-onboard-"));
 
     const select: WizardPrompter["select"] = vi.fn(async (opts) => {
-      if (opts.message === "How do you want to hatch your bot?") return "tui";
+      if (opts.message === "你想如何孵化你的机器人？") return "tui";
       return "quickstart";
     });
 
@@ -322,7 +322,7 @@ describe("runOnboardingWizard", () => {
 
       const calls = (note as unknown as { mock: { calls: unknown[][] } }).mock.calls;
       expect(calls.length).toBeGreaterThan(0);
-      expect(calls.some((call) => call?.[1] === "Web search (optional)")).toBe(true);
+      expect(calls.some((call) => call?.[1] === "网页搜索（可选）")).toBe(true);
     } finally {
       if (prevBraveKey === undefined) {
         delete process.env.BRAVE_API_KEY;

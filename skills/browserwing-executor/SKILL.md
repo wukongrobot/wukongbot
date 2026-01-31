@@ -1,8 +1,8 @@
 ---
-name: browserwing-executor
+name: browserwing
+homepage: https://github.com/browserwing/browserwing
 description: Control browser automation through HTTP API. Supports page navigation, element interaction (click, type, select), data extraction, accessibility snapshot analysis, screenshot, JavaScript execution, and batch operations.
-homepage: http://127.0.0.1:8080/api/v1/executor/help
-metadata: {"moltbot":{"emoji":"🌐","requires":{"config":["browser.enabled"]},"primaryEnv":"BROWSERWING_EXECUTOR_URL"}}
+metadata: {"moltbot":{"emoji":"📍","requires":{"bins":["goplaces"],"env":["GOOGLE_PLACES_API_KEY"]},"primaryEnv":"GOOGLE_PLACES_API_KEY","install":[{"id":"brew","kind":"brew","formula":"steipete/tap/goplaces","bins":["goplaces"],"label":"Install goplaces (brew)"}]}}
 ---
 
 # BrowserWing Executor API

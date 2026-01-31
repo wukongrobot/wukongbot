@@ -151,12 +151,15 @@ function renderSkill(skill: SkillStatusEntry, props: SkillsProps) {
         ${skill.primaryEnv
           ? html`
               <div class="field" style="margin-top: 10px;">
-                <span>API Key</span>
+                <span>${skill.primaryEnv}</span>
                 <input
                   type="password"
                   .value=${apiKey}
                   @input=${(e: Event) =>
                     props.onEdit(skill.skillKey, (e.target as HTMLInputElement).value)}
+                  placeholder="${skill.primaryEnv === 'BROWSERWING_EXECUTOR_URL' 
+                    ? 'http://127.0.0.1:8080' 
+                    : ''}"
                 />
               </div>
               <button
@@ -165,7 +168,7 @@ function renderSkill(skill: SkillStatusEntry, props: SkillsProps) {
                 ?disabled=${busy}
                 @click=${() => props.onSaveKey(skill.skillKey)}
               >
-                保存 Key
+                保存
               </button>
             `
           : nothing}

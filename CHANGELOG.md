@@ -2,8 +2,14 @@
 
 Docs: https://docs.molt.bot
 
-## 2026.1.27-beta.1
-Status: beta.
+## 2026.1.31
+Status: dev.
+
+### Changes
+- Version: update to date-based versioning (2026.1.31) to align with release convention.
+
+## 1.0.0
+Status: beta (deprecated, replaced by 2026.1.31).
 
 ### Changes
 - Rebrand: rename the npm package/CLI to `moltbot`, add a `moltbot` compatibility shim, and move extensions to the `@moltbot/*` scope.

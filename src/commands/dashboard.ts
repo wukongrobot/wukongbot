@@ -33,10 +33,10 @@ export async function dashboardCommand(
   });
   const authedUrl = token ? `${links.httpUrl}?token=${encodeURIComponent(token)}` : links.httpUrl;
 
-  runtime.log(`Dashboard URL: ${authedUrl}`);
+  runtime.log(`控制面板链接：${authedUrl}`);
 
   const copied = await copyToClipboard(authedUrl).catch(() => false);
-  runtime.log(copied ? "Copied to clipboard." : "Copy to clipboard unavailable.");
+  runtime.log(copied ? "已复制到剪贴板。" : "无法使用剪贴板复制。");
 
   let opened = false;
   let hint: string | undefined;
@@ -53,11 +53,11 @@ export async function dashboardCommand(
       });
     }
   } else {
-    hint = "Browser launch disabled (--no-open). Use the URL above.";
+    hint = "已禁用自动打开（--no-open）。请使用上方链接。";
   }
 
   if (opened) {
-    runtime.log("Opened in your browser. Keep that tab to control Moltbot.");
+    runtime.log("已在浏览器中打开。保留该标签页以控制悟空Bot。");
   } else if (hint) {
     runtime.log(hint);
   }

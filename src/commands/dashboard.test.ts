@@ -87,7 +87,7 @@ describe("dashboardCommand", () => {
     expect(mocks.copyToClipboard).toHaveBeenCalledWith("http://127.0.0.1:18789/?token=abc123");
     expect(mocks.openUrl).toHaveBeenCalledWith("http://127.0.0.1:18789/?token=abc123");
     expect(runtime.log).toHaveBeenCalledWith(
-      "Opened in your browser. Keep that tab to control Moltbot.",
+      "已在浏览器中打开。保留该标签页以控制悟空Bot。",
     );
   });
 
@@ -115,7 +115,7 @@ describe("dashboardCommand", () => {
     expect(mocks.detectBrowserOpenSupport).not.toHaveBeenCalled();
     expect(mocks.openUrl).not.toHaveBeenCalled();
     expect(runtime.log).toHaveBeenCalledWith(
-      "Browser launch disabled (--no-open). Use the URL above.",
+      "已禁用自动打开（--no-open）。请使用上方链接。",
     );
   });
 });
